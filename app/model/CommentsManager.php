@@ -24,7 +24,7 @@ class CommentsManager extends Manager
             $q->execute(array($id));
             $listComments = [];
 
-            while($comment = $q->fetch()) {
+            while ($comment = $q->fetch()) {
                 $dataComments = [
                     'id' => $comment['id'],
                     'nickname' => $comment['nickname'],
@@ -34,7 +34,18 @@ class CommentsManager extends Manager
                 $listComments[] = new Comment($dataComments);
             }
             return $listComments;
-        } catch (PDOException $pdoE) {
+        } catch (\PDOException $pdoE) {
+            echo 'Erreur PDO : ' . $pdoE->getMessage();
+        }
+    }
+
+    public function addComment()
+    {
+        try {
+            $db = $this->dbconnect();
+            $q = $db->prepare('INSERT INTO comments (post_id, author_id, content, comment_date) VALUES (?, ?, ?, NOW())');
+            $q->execute(array($postId, $authorId, $comment));
+        } catch (\PDOException $pdoE) {
             echo 'Erreur PDO : ' . $pdoE->getMessage();
         }
     }
