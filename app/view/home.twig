@@ -1,0 +1,14 @@
+{% extends "template.twig" %}
+{% block body %}
+    {% for recipe in listRecipes %}
+        <h4>{{ recipe.recipeTitle }}</h4>
+        <p>De <strong>{{ recipe.nickname }}</strong> à {{ recipe.recipeDate }}</p>
+        <p>Catégorie: {{ recipe.category }}</p>
+        <p>Temps: {{ recipe.cookingTime }}mn</p>
+        <p>Personnes: {{ recipe.persons }}</p>
+        <p>Difficulté: {{ recipe.difficulty }}</p>
+        <p>{{ recipe.recipeContent }}</p>
+
+        <p class="text-center"><a href="recipes/{{ recipe.recipeId }}" class="btn btn-primary p-1">Voir la recette</a></p>
+    {% endfor %}
+{% endblock %}

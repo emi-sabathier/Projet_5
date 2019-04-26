@@ -1,0 +1,13 @@
+{
+    "require": {
+        "monolog/monolog": "1.0.*",
+        "twig/twig": "^2.8",
+        "bramus/router": "^1.4"
+    },
+"autoload": {
+    "psr-4": {
+      "app\\controller\\": "app/controller",
+      "app\\model\\": "app/model"
+    }
+  }
+}
