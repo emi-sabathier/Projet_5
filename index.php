@@ -1,38 +1,37 @@
 <?php
 require 'vendor/autoload.php';
 use app\controller\RecipesController;
-use app\controller\CommentsController;
 use app\controller\UsersController;
 $router = new \Bramus\Router\Router();
+define('BASEURL', 'http://localhost:8080/Projets/Projet_5');
 
-// Home
+//Home
 $router->get('/', function () {
-    $recipesController = new RecipesController();
-    $recipesController->listRecipes();
+	$recipesController = new RecipesController();
+	$recipesController->listRecipes();
 });
 // Recipes list + recipe id
 $router->mount('/recipes', function () use ($router) {
-    $router->get('/', function () {
-        $recipesController = new RecipesController();
-        $recipesController->listRecipes();
-    });
-    $router->get('/id/(\d+)', function () {
-        $recipesController = new RecipesController();
-        $commentsController = new CommentsController();
-        $recipesController->recipe();
-        $commentsController->postComment();
-    });
+	$router->get('/', function () {
+		$recipesController = new RecipesController();
+		$recipesController->listRecipes();
+	});
+	$router->get('/id/(\d+)', function ($id) {
+		$recipesController = new RecipesController();
+		$recipesController->recipe($id);
+	});
 });
-// Login/register pages
-$router->mount('/authpage', function () use ($router){
-    $router->get('/', function(){
-        $usersController = new UsersController();
-        $usersController->loginPage();
-    });
-    $router->get('/register', function () {
-        $usersController = new UsersController();
-        $usersController->registerPage();
-    });
+$router->get('/authpage', function () {
+	$usersController = new UsersController();
+	$usersController->loginPage();
 });
-$router->run();
+$router->get('/register', function () {
+	$usersController = new UsersController();
+	$usersController->registerPage();
+});
+$router->post('/newuser', function () {
+	$usersController = new UsersController();
+	$usersController->newUser();
+});
 
+$router->run();
