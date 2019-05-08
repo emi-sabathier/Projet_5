@@ -3,11 +3,11 @@ namespace app\model;
 
 class UsersManager extends Manager {
 
-	public function getEmail($registerEmail) {
+	public function getEmail($email) {
 		try {
 			$db = $this->dbConnect();
 			$q = $db->prepare('SELECT id, role, nickname, email, password FROM users WHERE email = ?');
-			$q->execute(array($registerEmail));
+			$q->execute(array($email));
 			$user = $q->fetch();
 
 			if ($user == false) {
@@ -29,11 +29,11 @@ class UsersManager extends Manager {
 		}
 	}
 
-    public function getNickname($registerNickname) {
+    public function getNickname($nickname) {
         try {
             $db = $this->dbConnect();
             $q = $db->prepare('SELECT id, role, nickname, email, password FROM users WHERE nickname = ?');
-            $q->execute(array($registerNickname));
+            $q->execute(array($nickname));
             $user = $q->fetch();
 
             if ($user == false) {

@@ -2,23 +2,23 @@
 {% block body %}
 <div>
     <h3>Identifiez-vous</h3>
-    <form action="index.php?action=signin" method="post" class="form-group needs-validation" novalidate>
-        <label for="signinLogin">Login</label><br />
+    <form action="{{ baseUrl }}/login" method="post" class="form-group needs-validation" novalidate>
+        <label for="signinEmail">Login</label><br />
         <div class="col-md-3 mb-3 pl-0">
-            <input type="text" id="signinLogin" name="signinLogin" class="form-control form-control-md"
-                   placeholder="Votre login" required />
-            <div class="invalid-feedback">
-                Champ incorrect
-            </div>
+            <input type="text" id="signinEmail" name="signinEmail" class="form-control form-control-md"
+                   placeholder="Votre email" required />
+            {% if errors.no_email %}
+                <p>L'identifiant n'existe pas</p>
+            {% endif %}
         </div>
         <div>
-            <label for="signinPassword">Mot de passe</label><br />
+            <label for="signinPwd">Mot de passe</label><br />
             <div class="col-md-3 mb-3 pl-0">
-                <input type="password" id="signinPassword" name="signinPassword" rows="10"
+                <input type="password" id="signinPwd" name="signinPwd" rows="10"
                        class="form-control form-control-md " placeholder="Votre mot de passe" required></textarea>
-                <div class="invalid-feedback">
-                    Champ incorrect
-                </div>
+                {% if errors.wrong_pwd %}
+                    <p>Le mot de passe est incorrect</p>
+                {% endif %}
             </div>
         </div>
         <?php if($error) : ?>
@@ -28,6 +28,9 @@
         <div>
             <input type="submit" value="Envoyer" class="btn btn-primary p-1" />
         </div>
+        {% if errors.empty_field %}
+            <p>Un des champs est vide.</p>
+        {% endif %}
     </form>
 </div>
 {% endblock %}
