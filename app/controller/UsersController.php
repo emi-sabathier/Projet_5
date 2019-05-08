@@ -9,7 +9,7 @@ class UsersController extends AppController
 
     public function loginPage($compactVars = null)
     {
-        if($compactVars == null) {
+        if ($compactVars == null) {
             echo $this->twig->render('login.twig');
         } else {
             echo $this->twig->render('login.twig', $compactVars);
@@ -36,26 +36,26 @@ class UsersController extends AppController
             $usersManager = new UsersManager();
             $login = $usersManager->getEmail($_POST['signinEmail']);
 
-            if (empty($_POST['signinEmail']) || empty($_POST['signinPwd'])){
-                $errors['empty_field'] = true;
+            if (empty($_POST['signinEmail']) || empty($_POST['signinPwd'])) {
+                $errors['emptyField'] = true;
             }
-            if ($login == false) {
-                $errors['no_email'] = 'L\'identifiant n\'existe pas';
+            if ($login == false && $login > 0) {
+                $errors['noEmail'] = 'L\'identifiant n\'existe pas';
             } else {
-            $pwdCheck = password_verify($_POST['signinPwd'], $login->getPassword());
+                $pwdCheck = password_verify($_POST['signinPwd'], $login->getPassword());
                 if ($pwdCheck == false) {
-                    $errors['wrong_pwd'] = 'Le mot de passe n\'est pas correct';
+                    $errors['wrongPwd'] = 'Le mot de passe n\'est pas correct';
                 } else {
-                    if(!empty($errors)){
-                        $this->loginPage(compact('errors'));
-                    } else {
-                        $_SESSION['id'] = $login->getId();
-                        $_SESSION['email'] = $login->getEmail();
-                        $_SESSION['nickname'] = $login->getNickname();
-                        $_SESSION['role'] = $login->getRole();
-                        header('location:' . BASEURL);
-                    }
+                    $_SESSION['id'] = $login->getId();
+                    $_SESSION['email'] = $login->getEmail();
+                    $_SESSION['nickname'] = $login->getNickname();
+                    $_SESSION['role'] = $login->getRole();
+                    header('location:' . BASEURL);
                 }
+            }
+
+            if (!empty($errors)) {
+                $this->loginPage(compact('errors'));
             }
         } else {
             header('Location: ' . BASEURL . '/register');
@@ -73,28 +73,28 @@ class UsersController extends AppController
                 $nicknameExists = $usersManager->getNickname($_POST['registerNickname']);
 
                 if (empty($_POST['registerEmail']) || empty($_POST['registerNickname']) || empty($_POST['registerPwd'])) {
-                    $errors['empty_field'] = true;
+                    $errors['emptyField'] = true;
                 }
                 if ($emailExists == true) {
-                    $errors['email_exists'] = true;
+                    $errors['emailExists'] = true;
                 }
                 if (!preg_match('#^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]{2,4}+$#', $_POST['registerEmail'])) {
-                    $errors['regex_email'] = true;
+                    $errors['regexEmail'] = true;
                 }
                 if ($nicknameExists == true) {
-                    $errors['nickname_exists'] = true;
+                    $errors['nicknameExists'] = true;
                 }
                 if (!preg_match('#^[a-zA-Z0-9]#', $_POST['registerNickname'])) {
-                    $errors['regex_nickname'] = true;
+                    $errors['regexNickname'] = true;
                 }
                 if (strlen($_POST['registerNickname']) < 3) {
-                    $errors['short_nickname'] = true;
+                    $errors['shortNickname'] = true;
                 }
                 if (!preg_match('#^[a-zA-Z0-9]#', $_POST['registerPwd'])) {
-                    $errors['regex_pwd'] = true;
+                    $errors['regexPwd'] = true;
                 }
                 if (strlen($_POST['registerPwd']) < 8) {
-                    $errors['short_pwd'] = true;
+                    $errors['shortPwd'] = true;
                 }
                 if (!empty($errors)) {
                     // Si erreurs, on compacte le tableau pour les afficher dans la view contenue dans registerPage
@@ -114,7 +114,9 @@ class UsersController extends AppController
             throw new \Exception($e->getMessage());
         }
     }
-    public function disconnect(){
+
+    public function disconnect()
+    {
         session_destroy();
         header('Location:' . BASEURL);
         exit;

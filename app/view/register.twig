@@ -10,9 +10,9 @@
                 </div>
                 <input type="text" id="registerEmail" name="registerEmail" aria-describedby="inputGroupPrepend"
                        placeholder="Votre email" required/>
-                {% if errors.email_exists %}
+                {% if errors.emailExists %}
                     <p>L'email existe déjà</p>
-                {% elseif errors.regex_email %}
+                {% elseif errors.regexEmail %}
                     <p>Veuillez rentrer un email valide. Lettres, chiffres, _ , . , - autorisés</p>
                 {% endif %}
             </div>
@@ -22,11 +22,11 @@
                     <input type="text" id="registerNickname" name="registerNickname" rows="10"
                            placeholder="Votre pseudo" required/>
                 </div>
-                {% if errors.nickname_exists %}
+                {% if errors.nicknameExists %}
                     <p>Le pseudo est déjà pris</p>
-                {% elseif errors.regex_nickname %}
+                {% elseif errors.regexNickname %}
                     <p>Renseignez un pseudo valide (Lettres et chiffres)</p>
-                {% elseif errors.short_nickname %}
+                {% elseif errors.shortNickname %}
                     <p>Le pseudo doit faire minimum 3 caractères</p>
                 {% endif %}
             </div>
@@ -36,9 +36,9 @@
                     <input type="password" id="registerPwd" name="registerPwd" rows="10"
                            placeholder="Votre mot de passe" class="form-control form-control-md"
                            placeholder="Votre mot de passe" required>
-                    {% if errors.regex_pwd %}
+                    {% if errors.regexPwd %}
                         <p>Le mot de passe ne doit comprendre que des chiffres et lettres</p>
-                    {% elseif errors.short_pwd %}
+                    {% elseif errors.shortPwd %}
                         <p>Le mot de passe doit faire minimum 8 caractères </p>
                     {% endif %}
                 </div>
@@ -46,7 +46,7 @@
             <div>
                 <input type="submit" value="Envoyer" class="btn btn-primary p-1"/>
             </div>
-            {% if errors.empty_field is defined %}
+            {% if errors.emptyField %}
                 <p>Un des champs est vide</p>
             {% endif %}
         </form>

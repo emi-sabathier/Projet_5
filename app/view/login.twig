@@ -7,7 +7,7 @@
         <div class="col-md-3 mb-3 pl-0">
             <input type="text" id="signinEmail" name="signinEmail" class="form-control form-control-md"
                    placeholder="Votre email" required />
-            {% if errors.no_email %}
+            {% if errors.noEmail %}
                 <p>L'identifiant n'existe pas</p>
             {% endif %}
         </div>
@@ -16,19 +16,16 @@
             <div class="col-md-3 mb-3 pl-0">
                 <input type="password" id="signinPwd" name="signinPwd" rows="10"
                        class="form-control form-control-md " placeholder="Votre mot de passe" required></textarea>
-                {% if errors.wrong_pwd %}
+                {% if errors.wrongPwd %}
                     <p>Le mot de passe est incorrect</p>
                 {% endif %}
             </div>
         </div>
-        <?php if($error) : ?>
-        <p><?= $msg ?></p>
-        <?php endif; ?>
         <p>Pas encore inscrit ? <a href="{{ baseUrl }}/register">c'est par ici</a></p>
         <div>
             <input type="submit" value="Envoyer" class="btn btn-primary p-1" />
         </div>
-        {% if errors.empty_field %}
+        {% if errors.emptyField %}
             <p>Un des champs est vide.</p>
         {% endif %}
     </form>
