@@ -35,7 +35,7 @@ class CommentsManager extends Manager
             }
             return $listComments;
         } catch (\PDOException $pdoE) {
-            echo 'Erreur PDO : ' . $pdoE->getMessage();
+            throw new \Exception($pdoE->getMessage());
         }
     }
 
