@@ -74,8 +74,12 @@ class __TwigTemplate_262043b2485fe2fcfd9b2647797e9acc844f263d9370d4b761858e50b43
         // line 10
         echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, ($context["recipe"] ?? null), "recipeContent", []), "html", null, true);
         echo "</p>
-
-        <form action=\"index.php?action=postComment&amp;postId=<?=\$post['id']?>\" method=\"post\" class=\"form-group\">
+        <form action=\" ";
+        // line 11
+        echo twig_escape_filter($this->env, ($context["baseUrl"] ?? null), "html", null, true);
+        echo "/recipes/id/";
+        echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, ($context["recipe"] ?? null), "recipeId", []), "html", null, true);
+        echo "/postcomment\" method=\"post\" class=\"form-group\">
             <div>
                 <label for=\"comment\">Commentaire</label><br/>
                 <textarea id=\"comment\" name=\"comment\" cols=\"50\" rows=\"5\" required class=\"form-control form-control-sm\"></textarea>
@@ -86,26 +90,26 @@ class __TwigTemplate_262043b2485fe2fcfd9b2647797e9acc844f263d9370d4b761858e50b43
         </form>
 
         ";
-        // line 22
+        // line 21
         $context['_parent'] = $context;
-        $context['_seq'] = twig_ensure_traversable(($context["listComments"] ?? null));
+        $context['_seq'] = twig_ensure_traversable(($context["comments"] ?? null));
         foreach ($context['_seq'] as $context["_key"] => $context["comment"]) {
-            // line 23
+            // line 22
             echo "            <p>
                 <strong>";
-            // line 24
+            // line 23
             echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["comment"], "nickname", []), "html", null, true);
             echo "</strong>
                 Le
                 ";
-            // line 26
+            // line 25
             echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["comment"], "date", []), "html", null, true);
             echo "
                 <a href=\"#\" class=\"btn btn-danger p-1\">Signaler</a>
             </p>
             <p>
                 ";
-            // line 30
+            // line 29
             echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["comment"], "content", []), "html", null, true);
             echo "
             </p>
@@ -114,7 +118,7 @@ class __TwigTemplate_262043b2485fe2fcfd9b2647797e9acc844f263d9370d4b761858e50b43
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['comment'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 33
+        // line 32
         echo "        <a href=\"";
         echo twig_escape_filter($this->env, ($context["baseUrl"] ?? null), "html", null, true);
         echo "\" class=\"btn btn-secondary p-1 text-center\">Retour</a></p>
@@ -134,7 +138,7 @@ class __TwigTemplate_262043b2485fe2fcfd9b2647797e9acc844f263d9370d4b761858e50b43
 
     public function getDebugInfo()
     {
-        return array (  118 => 33,  109 => 30,  102 => 26,  97 => 24,  94 => 23,  90 => 22,  75 => 10,  71 => 9,  67 => 8,  63 => 7,  59 => 6,  53 => 5,  47 => 3,  44 => 2,  34 => 1,);
+        return array (  122 => 32,  113 => 29,  106 => 25,  101 => 23,  98 => 22,  94 => 21,  79 => 11,  75 => 10,  71 => 9,  67 => 8,  63 => 7,  59 => 6,  53 => 5,  47 => 3,  44 => 2,  34 => 1,);
     }
 
     public function getSourceContext()
@@ -149,8 +153,7 @@ class __TwigTemplate_262043b2485fe2fcfd9b2647797e9acc844f263d9370d4b761858e50b43
         <p>Personnes: {{ recipe.persons }}</p>
         <p>Difficulté: {{ recipe.difficulty }}</p>
         <p>{{ recipe.recipeContent }}</p>
-
-        <form action=\"index.php?action=postComment&amp;postId=<?=\$post['id']?>\" method=\"post\" class=\"form-group\">
+        <form action=\" {{ baseUrl }}/recipes/id/{{ recipe.recipeId }}/postcomment\" method=\"post\" class=\"form-group\">
             <div>
                 <label for=\"comment\">Commentaire</label><br/>
                 <textarea id=\"comment\" name=\"comment\" cols=\"50\" rows=\"5\" required class=\"form-control form-control-sm\"></textarea>
@@ -160,7 +163,7 @@ class __TwigTemplate_262043b2485fe2fcfd9b2647797e9acc844f263d9370d4b761858e50b43
             </div>
         </form>
 
-        {% for comment in listComments %}
+        {% for comment in comments %}
             <p>
                 <strong>{{ comment.nickname }}</strong>
                 Le

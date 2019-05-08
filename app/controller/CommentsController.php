@@ -2,13 +2,12 @@
 
 namespace app\controller;
 use app\model\CommentsManager;
-use Exception;
 
 class CommentsController extends AppController
 {
-    public function postComment()
+    public function postComment($recipeId)
     {
-//        $commentsManager = new CommentsManager();
-//        $commentsManager->addComment($id, $_POST['nickname'], $_POST['comment']);
+        $commentsManager = new CommentsManager();
+        $commentsManager->addComment($recipeId, $_SESSION['id'], $_POST['comment']);
     }
 }

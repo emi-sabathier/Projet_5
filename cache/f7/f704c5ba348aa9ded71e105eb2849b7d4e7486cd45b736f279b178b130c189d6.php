@@ -53,17 +53,28 @@ class __TwigTemplate_1c542e67e4324f028ddb662e97f72e4644f2bffd629f3f571d817cedf1d
 <div class=\"container\">
     <div class=\"navbar navbar-dark bg-dark\">
         <div class=\"row mx-auto\">
-            <a href=\"";
+            ";
         // line 17
-        echo twig_escape_filter($this->env, ($context["baseUrl"] ?? null), "html", null, true);
-        echo "/authpage\" class=\"text-white btn btn-success\">Connexion</a>
-        </div>
+        if (twig_get_attribute($this->env, $this->source, ($context["session"] ?? null), "id", [])) {
+            // line 18
+            echo "                <a href=\"";
+            echo twig_escape_filter($this->env, ($context["baseUrl"] ?? null), "html", null, true);
+            echo "/disconnect\" class=\"text-white btn btn-danger\">Déconnexion</a>
+            ";
+        } else {
+            // line 20
+            echo "                <a href=\"";
+            echo twig_escape_filter($this->env, ($context["baseUrl"] ?? null), "html", null, true);
+            echo "/authpage\" class=\"text-white btn btn-success\">Connexion</a>
+            ";
+        }
+        // line 22
+        echo "        </div>
     </div>
-
     ";
-        // line 21
+        // line 24
         $this->displayBlock('body', $context, $blocks);
-        // line 23
+        // line 26
         echo "</div>
 <script src=\"app/public/js/jquery-3.4.1.js\">
 </script>
@@ -85,10 +96,10 @@ class __TwigTemplate_1c542e67e4324f028ddb662e97f72e4644f2bffd629f3f571d817cedf1d
         echo "Cuisine rapide";
     }
 
-    // line 21
+    // line 24
     public function block_body($context, array $blocks = [])
     {
-        // line 22
+        // line 25
         echo "    ";
     }
 
@@ -104,7 +115,7 @@ class __TwigTemplate_1c542e67e4324f028ddb662e97f72e4644f2bffd629f3f571d817cedf1d
 
     public function getDebugInfo()
     {
-        return array (  92 => 22,  89 => 21,  83 => 6,  67 => 23,  65 => 21,  58 => 17,  46 => 7,  44 => 6,  37 => 1,);
+        return array (  103 => 25,  100 => 24,  94 => 6,  78 => 26,  76 => 24,  72 => 22,  66 => 20,  60 => 18,  58 => 17,  46 => 7,  44 => 6,  37 => 1,);
     }
 
     public function getSourceContext()
@@ -125,10 +136,13 @@ class __TwigTemplate_1c542e67e4324f028ddb662e97f72e4644f2bffd629f3f571d817cedf1d
 <div class=\"container\">
     <div class=\"navbar navbar-dark bg-dark\">
         <div class=\"row mx-auto\">
-            <a href=\"{{ baseUrl }}/authpage\" class=\"text-white btn btn-success\">Connexion</a>
+            {% if session.id %}
+                <a href=\"{{ baseUrl }}/disconnect\" class=\"text-white btn btn-danger\">Déconnexion</a>
+            {% else %}
+                <a href=\"{{ baseUrl }}/authpage\" class=\"text-white btn btn-success\">Connexion</a>
+            {% endif %}
         </div>
     </div>
-
     {% block body %}
     {% endblock %}
 </div>
@@ -143,6 +157,6 @@ class __TwigTemplate_1c542e67e4324f028ddb662e97f72e4644f2bffd629f3f571d817cedf1d
 </script>
 </body>
 
-</html>", "template.twig", "C:\\Users\\cash\\Documents\\TAF\\Projet_5\\app\\view\\template.twig");
+</html>", "template.twig", "C:\\Users\\emilie\\OneDrive\\Projets\\Projet_5\\app\\view\\template.twig");
     }
 }

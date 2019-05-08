@@ -46,24 +46,37 @@ class __TwigTemplate_c3a4a2872fdae9a81d3ce23ed6fd7a5b98110dec518929643d2dfe01d7f
         // line 3
         echo "<div>
     <h3>Identifiez-vous</h3>
-    <form action=\"index.php?action=signin\" method=\"post\" class=\"form-group needs-validation\" novalidate>
-        <label for=\"signinLogin\">Login</label><br />
+    <form action=\"";
+        // line 5
+        echo twig_escape_filter($this->env, ($context["baseUrl"] ?? null), "html", null, true);
+        echo "/login\" method=\"post\" class=\"form-group needs-validation\" novalidate>
+        <label for=\"signinEmail\">Login</label><br />
         <div class=\"col-md-3 mb-3 pl-0\">
-            <input type=\"text\" id=\"signinLogin\" name=\"signinLogin\" class=\"form-control form-control-md\"
-                   placeholder=\"Votre login\" required />
-            <div class=\"invalid-feedback\">
-                Champ incorrect
-            </div>
-        </div>
+            <input type=\"text\" id=\"signinEmail\" name=\"signinEmail\" class=\"form-control form-control-md\"
+                   placeholder=\"Votre email\" required />
+            ";
+        // line 10
+        if (twig_get_attribute($this->env, $this->source, ($context["errors"] ?? null), "no_email", [])) {
+            // line 11
+            echo "                <p>L'identifiant n'existe pas</p>
+            ";
+        }
+        // line 13
+        echo "        </div>
         <div>
-            <label for=\"signinPassword\">Mot de passe</label><br />
+            <label for=\"signinPwd\">Mot de passe</label><br />
             <div class=\"col-md-3 mb-3 pl-0\">
-                <input type=\"password\" id=\"signinPassword\" name=\"signinPassword\" rows=\"10\"
+                <input type=\"password\" id=\"signinPwd\" name=\"signinPwd\" rows=\"10\"
                        class=\"form-control form-control-md \" placeholder=\"Votre mot de passe\" required></textarea>
-                <div class=\"invalid-feedback\">
-                    Champ incorrect
-                </div>
-            </div>
+                ";
+        // line 19
+        if (twig_get_attribute($this->env, $this->source, ($context["errors"] ?? null), "wrong_pwd", [])) {
+            // line 20
+            echo "                    <p>Le mot de passe est incorrect</p>
+                ";
+        }
+        // line 22
+        echo "            </div>
         </div>
         <?php if(\$error) : ?>
         <p><?= \$msg ?></p>
@@ -75,7 +88,15 @@ class __TwigTemplate_c3a4a2872fdae9a81d3ce23ed6fd7a5b98110dec518929643d2dfe01d7f
         <div>
             <input type=\"submit\" value=\"Envoyer\" class=\"btn btn-primary p-1\" />
         </div>
-    </form>
+        ";
+        // line 31
+        if (twig_get_attribute($this->env, $this->source, ($context["errors"] ?? null), "empty_field", [])) {
+            // line 32
+            echo "            <p>Un des champs est vide.</p>
+        ";
+        }
+        // line 34
+        echo "    </form>
 </div>
 ";
     }
@@ -92,7 +113,7 @@ class __TwigTemplate_c3a4a2872fdae9a81d3ce23ed6fd7a5b98110dec518929643d2dfe01d7f
 
     public function getDebugInfo()
     {
-        return array (  73 => 27,  47 => 3,  44 => 2,  34 => 1,);
+        return array (  99 => 34,  95 => 32,  93 => 31,  86 => 27,  79 => 22,  75 => 20,  73 => 19,  65 => 13,  61 => 11,  59 => 10,  51 => 5,  47 => 3,  44 => 2,  34 => 1,);
     }
 
     public function getSourceContext()
@@ -101,23 +122,23 @@ class __TwigTemplate_c3a4a2872fdae9a81d3ce23ed6fd7a5b98110dec518929643d2dfe01d7f
 {% block body %}
 <div>
     <h3>Identifiez-vous</h3>
-    <form action=\"index.php?action=signin\" method=\"post\" class=\"form-group needs-validation\" novalidate>
-        <label for=\"signinLogin\">Login</label><br />
+    <form action=\"{{ baseUrl }}/login\" method=\"post\" class=\"form-group needs-validation\" novalidate>
+        <label for=\"signinEmail\">Login</label><br />
         <div class=\"col-md-3 mb-3 pl-0\">
-            <input type=\"text\" id=\"signinLogin\" name=\"signinLogin\" class=\"form-control form-control-md\"
-                   placeholder=\"Votre login\" required />
-            <div class=\"invalid-feedback\">
-                Champ incorrect
-            </div>
+            <input type=\"text\" id=\"signinEmail\" name=\"signinEmail\" class=\"form-control form-control-md\"
+                   placeholder=\"Votre email\" required />
+            {% if errors.no_email %}
+                <p>L'identifiant n'existe pas</p>
+            {% endif %}
         </div>
         <div>
-            <label for=\"signinPassword\">Mot de passe</label><br />
+            <label for=\"signinPwd\">Mot de passe</label><br />
             <div class=\"col-md-3 mb-3 pl-0\">
-                <input type=\"password\" id=\"signinPassword\" name=\"signinPassword\" rows=\"10\"
+                <input type=\"password\" id=\"signinPwd\" name=\"signinPwd\" rows=\"10\"
                        class=\"form-control form-control-md \" placeholder=\"Votre mot de passe\" required></textarea>
-                <div class=\"invalid-feedback\">
-                    Champ incorrect
-                </div>
+                {% if errors.wrong_pwd %}
+                    <p>Le mot de passe est incorrect</p>
+                {% endif %}
             </div>
         </div>
         <?php if(\$error) : ?>
@@ -127,8 +148,11 @@ class __TwigTemplate_c3a4a2872fdae9a81d3ce23ed6fd7a5b98110dec518929643d2dfe01d7f
         <div>
             <input type=\"submit\" value=\"Envoyer\" class=\"btn btn-primary p-1\" />
         </div>
+        {% if errors.empty_field %}
+            <p>Un des champs est vide.</p>
+        {% endif %}
     </form>
 </div>
-{% endblock %}", "login.twig", "C:\\Users\\cash\\Documents\\TAF\\Projet_5\\app\\view\\login.twig");
+{% endblock %}", "login.twig", "C:\\Users\\emilie\\OneDrive\\Projets\\Projet_5\\app\\view\\login.twig");
     }
 }

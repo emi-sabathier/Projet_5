@@ -120,6 +120,6 @@ class __TwigTemplate_ab5ae3c67238a59dbdb3d32217842d626f88b94d7b15aeca8175408f06f
 
         <p class=\"text-center\"><a href=\"recipes/id/{{ recipe.recipeId }}\" class=\"btn btn-primary p-1\">Voir la recette</a></p>
     {% endfor %}
-{% endblock %} ", "home.twig", "C:\\Users\\cash\\Documents\\TAF\\Projet_5\\app\\view\\home.twig");
+{% endblock %} ", "home.twig", "C:\\Users\\emilie\\OneDrive\\Projets\\Projet_5\\app\\view\\home.twig");
     }
 }

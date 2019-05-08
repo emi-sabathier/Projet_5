@@ -6,10 +6,10 @@ class CommentsManager extends Manager
 {
     /**
      * Get the comments list of a recipe
-     * @param $id integer
+     * @param $recipeId integer
      * @return array
      */
-    public function getComments($id)
+    public function getComments($recipeId)
     {
         try {
             $db = $this->dbconnect();
@@ -21,9 +21,9 @@ class CommentsManager extends Manager
             INNER JOIN recipes ON comments.recipe_id = recipes.id
             INNER JOIN users ON comments.user_id = users.id WHERE recipe_id = ?
             ORDER BY cmt_date DESC');
-            $q->execute(array($id));
+            $q->execute(array($recipeId));
             $listComments = [];
-
+            // récupère chaque commentaire, et les stocke dans l'objet
             while ($comment = $q->fetch()) {
                 $dataComments = [
                     'id' => $comment['id'],
@@ -39,14 +39,14 @@ class CommentsManager extends Manager
         }
     }
 
-    public function addComment()
+    public function addComment($recipeId, $authorId, $comment)
     {
         try {
             $db = $this->dbconnect();
-            $q = $db->prepare('INSERT INTO comments (post_id, author_id, content, comment_date) VALUES (?, ?, ?, NOW())');
-            $q->execute(array($postId, $authorId, $comment));
+            $q = $db->prepare('INSERT INTO comments (recipe_id, user_id, cmt_content, cmt_date) VALUES (?, ?, ?, NOW())');
+            $q->execute(array($recipeId, $authorId, $comment));
         } catch (\PDOException $pdoE) {
-            echo 'Erreur PDO : ' . $pdoE->getMessage();
+            throw new \Exception($pdoE->getMessage());
         }
     }
 }

@@ -8,8 +8,7 @@
         <p>Personnes: {{ recipe.persons }}</p>
         <p>Difficulté: {{ recipe.difficulty }}</p>
         <p>{{ recipe.recipeContent }}</p>
-
-        <form action="index.php?action=postComment&amp;postId=<?=$post['id']?>" method="post" class="form-group">
+        <form action=" {{ baseUrl }}/recipes/id/{{ recipe.recipeId }}/postcomment" method="post" class="form-group">
             <div>
                 <label for="comment">Commentaire</label><br/>
                 <textarea id="comment" name="comment" cols="50" rows="5" required class="form-control form-control-sm"></textarea>
@@ -19,7 +18,7 @@
             </div>
         </form>
 
-        {% for comment in listComments %}
+        {% for comment in comments %}
             <p>
                 <strong>{{ comment.nickname }}</strong>
                 Le

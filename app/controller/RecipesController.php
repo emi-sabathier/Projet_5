@@ -1,6 +1,7 @@
 <?php
 namespace app\controller;
 use app\model\RecipesManager;
+use app\model\CommentsManager;
 use Exception;
 
 class RecipesController extends AppController
@@ -15,27 +16,30 @@ class RecipesController extends AppController
         echo $this->twig->render('home.twig', ['listRecipes' => $listRecipes]);
     }
     /**
-     * Call getRecipe() from RecipesManager if the verifications OK
+     * Call getRecipe() and getComments() from RecipesManager + CommentsManager if the verifications OK
      */
-    public function recipe($id)
+    public function recipe($recipeId)
     {
         try {
-            if (isset($id) && $id > 0) {
+            if (isset($recipeId) && $recipeId > 0) {
                 $recipesManager = new RecipesManager();
+                $commentsManager = new CommentsManager();
+                $recipe = $recipesManager->getRecipe($recipeId);
+                $comment = $commentsManager->getComments($recipeId);
 
-                $recipe = $recipesManager->getRecipe($id);
                 if (is_null($recipe->getRecipeId())) {
-                    throw new Exception('L\'identifiant de recette n\'existe pas.');
+                     echo 'L\'identifiant de recette n\'existe pas.';
                 } else {
                     echo $this->twig->render('recipe.twig', [
-                        'recipe' => $recipe
+                        'recipe' => $recipe,
+                        'comments' => $comment
                     ]);
                 }
             } else {
                 throw new Exception('Les paramètres doivent être des nombres');
             }
         } catch (Exception $e) {
-            echo $e->getMessage();
+            throw new \Exception($e->getMessage());
         }
     }
 }
