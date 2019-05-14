@@ -68,5 +68,10 @@ $router->mount('/admin', function () use ($router) {
         $recipesController = new RecipesController();
         $recipesController->deleteRecipe();
     });
+    $router->post('/deletecomment/', function () {
+        $commentsController = new CommentsController();
+        $commentsController->deleteComment();
+    });
+
 });
 $router->run();

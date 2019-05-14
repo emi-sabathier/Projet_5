@@ -49,4 +49,20 @@ class CommentsController extends AppController
             echo json_encode('error');
         }
     }
+    public function deleteComment(){
+        if(isset($_POST['commentId'])) {
+            // si int : transforme en nombre entier peu importe ce que contient la var
+            // si string, transforme en 0
+            $commentId = (int) $_POST['commentId'];
+            if($commentId != 0) {
+                $commentsManager = new CommentsManager();
+                $commentsManager->reportComment($commentId);
+                echo json_encode('success');
+            } else {
+                echo json_encode('error');
+            }
+        } else {
+            echo json_encode('error');
+        }
+    }
 }
