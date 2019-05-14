@@ -3,32 +3,39 @@
     <h4>Recette : {{ recipe.recipeTitle }}</h4>
     <div>
         <p>De <strong>{{ recipe.nickname }}</strong> à {{ recipe.recipeDate }}</p>
-        <p>Catégorie: {{ recipe.category }}</p>
+        <p>Catégorie: {{ recipe.categoryLabel }}</p>
         <p>Temps: {{ recipe.cookingTime }}mn</p>
         <p>Personnes: {{ recipe.persons }}</p>
-        <p>Difficulté: {{ recipe.difficulty }}</p>
+        <p>Difficulté: {{ recipe.difficultyLabel }}</p>
         <p>{{ recipe.recipeContent }}</p>
-        <form action=" {{ baseUrl }}/recipes/id/{{ recipe.recipeId }}/postcomment" method="post" class="form-group">
-            <div>
-                <label for="comment">Commentaire</label><br/>
-                <textarea id="comment" name="comment" cols="50" rows="5" required class="form-control form-control-sm"></textarea>
-            </div>
-            <div>
-                <input type="submit" value="Envoyer" class="btn btn-primary mt-3 mb-0 p-1"/>
-            </div>
-        </form>
-
-        {% for comment in comments %}
-            <p>
-                <strong>{{ comment.nickname }}</strong>
-                Le
-                {{ comment.date }}
-                <a href="#" class="btn btn-danger p-1">Signaler</a>
-            </p>
-            <p>
-                {{ comment.content }}
-            </p>
-        {% endfor %}
+        {% if session.id %}
+            <form action=" {{ baseUrl }}/recipes/id/{{ recipe.recipeId }}/postcomment" method="post" class="form-group">
+                <div>
+                    <label for="comment">Commentaire</label><br/>
+                    <textarea id="comment" name="comment" cols="50" rows="5" required
+                              class="form-control form-control-sm"></textarea>
+                </div>
+                <div>
+                    <input type="submit" value="Envoyer" class="btn btn-primary mt-3 mb-0 p-1"/>
+                </div>
+            </form>
+        {% else %}
+            <p><strong>Vous devez être logué pour pouvoir poster un commentaire</strong></p>
+        {% endif %}
+        <section id="comments">
+            {% for comment in comments %}
+                <p data-id="comment-{{ comment.commentId }}">
+                    <strong>{{ comment.nickname }}</strong>
+                    Le
+                    {{ comment.date }}
+                    <button data-id="{{ comment.commentId }}" class="report-comment btn btn-danger p-1">Signaler
+                    </button>
+                </p>
+                <p>
+                    {{ comment.content }}
+                </p>
+            {% endfor %}
+        </section>
         <a href="{{ baseUrl }}" class="btn btn-secondary p-1 text-center">Retour</a></p>
     </div>
 {% endblock %}

@@ -74,7 +74,7 @@ class User {
 	/**
 	 * @return string
 	 */
-	public function getEmail() {
+	public function getUserByEmail() {
 		return $this->email;
 	}
 

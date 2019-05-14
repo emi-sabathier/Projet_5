@@ -1,14 +1,32 @@
 {% extends "template.twig" %}
 {% block body %}
-    {% for recipe in listRecipes %}
-        <h4>{{ recipe.recipeTitle }}</h4>
-        <p>De <strong>{{ recipe.nickname }}</strong> à {{ recipe.recipeDate }}</p>
-        <p>Catégorie: {{ recipe.category }}</p>
-        <p>Temps: {{ recipe.cookingTime }}mn</p>
-        <p>Personnes: {{ recipe.persons }}</p>
-        <p>Difficulté: {{ recipe.difficulty }}</p>
-        <p>{{ recipe.recipeContent }}</p>
 
-        <p class="text-center"><a href="recipes/id/{{ recipe.recipeId }}" class="btn btn-primary p-1">Voir la recette</a></p>
-    {% endfor %}
-{% endblock %} 
+    <div class="row">
+        <div class="card-deck">
+
+            {% for recipe in listRecipes %}
+                <div class="col-sm-6 col-md-4 col-lg-6 mx-auto">
+                    <article class="bg-light card mb-4">
+                        <div class="card-body">
+                            <h4>{{ recipe.recipeTitle }}</h4>
+                            <p>De <strong>{{ recipe.nickname }}</strong> à {{ recipe.recipeDate }}</p>
+                            <p>Catégorie: {{ recipe.categoryLabel }}</p>
+                            <p>Temps: {{ recipe.cookingTime }}mn</p>
+                            <p>Personnes: {{ recipe.persons }}</p>
+                            <p>Difficulté: {{ recipe.difficultyLabel }}</p>
+                            <p>{{ recipe.recipeContent }}</p>
+                            <p class="text-center"><a href="recipes/id/{{ recipe.recipeId }}"
+                                                      class="btn btn-primary p-1">Voir la recette</a></p>
+                        </div>
+                    </article>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="mx-auto">
+            {% for category in listCategories %}
+                <button type="button" class="btn btn-outline-success">{{ category.catLabel }}</button>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

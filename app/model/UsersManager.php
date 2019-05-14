@@ -3,7 +3,7 @@ namespace app\model;
 
 class UsersManager extends Manager {
 
-	public function getEmail($email) {
+	public function getUserByEmail($email) {
 		try {
 			$db = $this->dbConnect();
 			$q = $db->prepare('SELECT id, role, nickname, email, password FROM users WHERE email = ?');

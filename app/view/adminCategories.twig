@@ -1,0 +1,8 @@
+{% extends 'template.twig' %}
+{% block body %}
+    <h2>Panneau d'administration</h2>
+    <h5>Recettes de la catégorie</h5>
+    {% for recipe in recipesByCat %}
+        <p>{{ recipe.recipeTitle }}</p>
+    {% endfor %}
+{% endblock %}

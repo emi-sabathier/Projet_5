@@ -3,10 +3,11 @@ namespace app\model;
 
 class Comment
 {
-    private $id;
-    private $nickname;
-    private $date;
-    private $content;
+    private $_commentId;
+    private $_nickname;
+    private $_date;
+    private $_content;
+    private $_report;
 
     public function __construct(array $comment){
         $this->hydrate($comment);
@@ -23,17 +24,17 @@ class Comment
     /**
      * @return mixed
      */
-    public function getId()
+    public function getCommentId()
     {
-        return $this->id;
+        return $this->_commentId;
     }
 
     /**
      * @param mixed $id
      */
-    public function setId($id)
+    public function setCommentId($id)
     {
-        $this->id = $id;
+        $this->_commentId = $id;
     }
 
     /**
@@ -41,15 +42,15 @@ class Comment
      */
     public function getNickname()
     {
-        return $this->nickname;
+        return $this->_nickname;
     }
 
     /**
-     * @param mixed $nickname
+     * @param mixed $_nickname
      */
-    public function setNickname($nickname)
+    public function setNickname($_nickname)
     {
-        $this->nickname = $nickname;
+        $this->_nickname = $_nickname;
     }
 
     /**
@@ -57,15 +58,15 @@ class Comment
      */
     public function getDate()
     {
-        return $this->date;
+        return $this->_date;
     }
 
     /**
-     * @param mixed $date
+     * @param mixed $_date
      */
-    public function setDate($date)
+    public function setDate($_date)
     {
-        $this->date = $date;
+        $this->_date = $_date;
     }
 
     /**
@@ -73,15 +74,31 @@ class Comment
      */
     public function getContent()
     {
-        return $this->content;
+        return $this->_content;
     }
 
     /**
-     * @param mixed $content
+     * @param mixed $_content
      */
-    public function setContent($content)
+    public function setContent($_content)
     {
-        $this->content = $content;
+        $this->_content = $_content;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getReport()
+    {
+        return $this->_report;
+    }
+
+    /**
+     * @param mixed $_report
+     */
+    public function setReport($_report)
+    {
+        $this->_report = $_report;
     }
 
 }

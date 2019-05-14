@@ -2,7 +2,9 @@
 
 namespace app\controller;
 
+use app\model\RecipesManager;
 use app\model\UsersManager;
+use app\model\CommentsManager;
 
 class UsersController extends AppController
 {
@@ -16,10 +18,6 @@ class UsersController extends AppController
         }
     }
 
-    /**
-     * @param compacted array $compactVars
-     * To display errors in the twig view
-     */
     public function registerPage($compactVars = null)
     {
         if ($compactVars == null) {
@@ -34,26 +32,28 @@ class UsersController extends AppController
         if (isset($_POST['signinEmail'], $_POST['signinPwd'])) {
             $errors = [];
             $usersManager = new UsersManager();
-            $login = $usersManager->getEmail($_POST['signinEmail']);
+            $user = $usersManager->getUserByEmail($_POST['signinEmail']);
 
             if (empty($_POST['signinEmail']) || empty($_POST['signinPwd'])) {
                 $errors['emptyField'] = true;
             }
-            if ($login == false && $login > 0) {
+            if ($user == false && $user > 0) {
                 $errors['noEmail'] = 'L\'identifiant n\'existe pas';
             } else {
-                $pwdCheck = password_verify($_POST['signinPwd'], $login->getPassword());
+                $pwdCheck = password_verify($_POST['signinPwd'], $user->getPassword());
                 if ($pwdCheck == false) {
                     $errors['wrongPwd'] = 'Le mot de passe n\'est pas correct';
                 } else {
-                    $_SESSION['id'] = $login->getId();
-                    $_SESSION['email'] = $login->getEmail();
-                    $_SESSION['nickname'] = $login->getNickname();
-                    $_SESSION['role'] = $login->getRole();
-                    header('location:' . BASEURL);
+                    $_SESSION['user'] = $user;
+                    if ($_SESSION['user']->getRole() == 1) {
+                        header('Location:' . BASEURL . '/admin');
+                        exit;
+                    } elseif ($_SESSION['user']->getRole() == 0) {
+                    header('Location:' . BASEURL);
+                    exit;
+                    }
                 }
             }
-
             if (!empty($errors)) {
                 $this->loginPage(compact('errors'));
             }
@@ -69,7 +69,7 @@ class UsersController extends AppController
             if (isset($_POST['registerEmail'], $_POST['registerNickname'], $_POST['registerPwd'])) {
                 $errors = [];
                 $usersManager = new UsersManager();
-                $emailExists = $usersManager->getEmail($_POST['registerEmail']);
+                $emailExists = $usersManager->getUserByEmail($_POST['registerEmail']);
                 $nicknameExists = $usersManager->getNickname($_POST['registerNickname']);
 
                 if (empty($_POST['registerEmail']) || empty($_POST['registerNickname']) || empty($_POST['registerPwd'])) {
@@ -120,5 +120,16 @@ class UsersController extends AppController
         session_destroy();
         header('Location:' . BASEURL);
         exit;
+    }
+
+    public function adminPanel(){
+        $recipesManager = new RecipesManager();
+        $commentsManager = new CommentsManager();
+        $listRecipes = $recipesManager->getRecipes();
+        $listReportedComments = $commentsManager->getReportedComments();
+        echo $this->twig->render('admin.twig', [
+            'listRecipes' => $listRecipes,
+            'listReportedComments' => $listReportedComments
+        ]);
     }
 }

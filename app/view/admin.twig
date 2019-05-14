@@ -1,0 +1,57 @@
+{% extends "template.twig" %}
+{% block body %}
+    <h2>Panneau d'administration</h2>
+    <h4>Commentaires signalés</h4>
+    <table class="text-center table-striped table-borderless table-responsive table w-100 d-block d-sm-table d-md-table">
+        <thead class="thead-dark">
+        <tr>
+            <th>Titre</th>
+            <th>Auteur</th>
+            <th>Commentaire</th>
+            <th>Signalement</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        {% for reportedComment in listReportedComments %}
+            <tr>
+                <td>{{ reportedComment.recipeTitle }}</td>
+                <td>{{ reportedComment.nickname }}</td>
+                <td>{{ reportedComment.content }}</td>
+                <td>{{ reportedComment.report }}</td>
+                <td class="btn-group" role="group" aria-label="actions">
+                    <a href="index.php?action=deleteComment&commentId=<?=$report['id']?>" class="btn btn-danger p-1">Effacer</a>
+                    <a href="index.php?action=resetReport&commentId=<?=$report['id']?>" class="btn btn-secondary p-1">Annuler</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <h4>Liste des recettes</h4>
+
+    <table class="text-center table-striped table-borderless table-responsive table w-100 d-block d-sm-table d-md-table">
+        <thead class="thead-dark">
+        <tr>
+            <th>Titre</th>
+            <th>Date</th>
+            <th>Catégorie</th>
+            <th>Commentaires</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+
+        {% for recipe in listRecipes %}
+            <tr class="recipe">
+                <td>{{ recipe.recipeTitle }}</td>
+                <td>{{ recipe.recipeDate }}</td>
+                <td><a href="{{ baseUrl }}/admin/category/{{ recipe.categoryId }}">{{ recipe.category }}</a></td>
+                <td>commentaires</td>
+                <td class="btn-group" role="group" aria-label="actions">
+                    <a href="" class="btn btn-primary">Voir</a>
+                    <a href="" class="btn btn-secondary">Modifier</a>
+                    <button data-id="{{ recipe.recipeId }}" class="delete-recipe btn btn-danger">Effacer</button>
+                </td>
+            </tr>
+        {% endfor %}
+
+    </table>
+    <a href="{{ baseUrl }}" class="btn btn-secondary p-1 text-center">Retour</a></p>
+{% endblock %}

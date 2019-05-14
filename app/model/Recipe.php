@@ -1,23 +1,29 @@
 <?php
+
 namespace app\model;
 
 class Recipe
 {
-    private $id;
-    private $nickname;
-    private $cat_label;
-    private $cooking_time;
-    private $persons;
-    private $dif_id;
-    private $recipe_date;
-    private $recipe_title;
-    private $recipe_content;
+    private $_recipeId;
+    private $_nickname;
+    private $_categoryId;
+    private $_cat_label;
+    private $_cooking_time;
+    private $_persons;
+    private $_dif_label;
+    private $_difficultyId;
+    private $_recipe_date;
+    private $_recipe_title;
+    private $_recipe_content;
 
     // = (array $recipes)
-    public function __construct(array $recipe){
+    public function __construct(array $recipe)
+    {
         $this->hydrate($recipe);
     }
-    public function hydrate($recipe) {
+
+    public function hydrate($recipe)
+    {
         foreach ($recipe as $key => $value) {
             $setter = 'set' . ucfirst($key);
             if (method_exists($this, $setter)) {
@@ -25,147 +31,181 @@ class Recipe
             }
         }
     }
+
     /**
-     * @return integer
+     * @return mixed
      */
-    public function getRecipeId()
+    public function getRecipeId(): int
     {
-        return $this->id;
+        return $this->_recipeId;
     }
 
     /**
-     * @param integer $id
+     * @param mixed $id
      */
-    public function setRecipeId($id)
+    public function setRecipeId(int $id)
     {
-        $this->id = $id;
+        $this->_recipeId = $id;
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getNickname()
+    public function getNickname(): string
     {
-        return $this->nickname;
+        return $this->_nickname;
     }
 
     /**
-     * @param string $nickname
+     * @param mixed $nickname
      */
-    public function setNickname($nickname)
+    public function setNickname(string $nickname)
     {
-        $this->nickname = $nickname;
+        $this->_nickname = $nickname;
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getCategory()
+    public function getCategoryId(): int
     {
-        return $this->cat_label;
+        return $this->_categoryId;
     }
 
     /**
-     * @param string $cat_label
+     * @param mixed $cat_id
      */
-    public function setCategory($cat_label)
+    public function setCategoryId(int $cat_id)
     {
-        $this->cat_label = $cat_label;
+        $this->_categoryId = $cat_id;
     }
 
     /**
-     * @return integer
+     * @return mixed
      */
-    public function getCookingTime()
+    public function getCategoryLabel(): string
     {
-        return $this->cooking_time;
+        return $this->_cat_label;
     }
 
     /**
-     * @param integer $cooking_time
+     * @param mixed $cat_label
      */
-    public function setCookingTime($cooking_time)
+    public function setCategoryLabel(string $cat_label)
     {
-        $this->cooking_time = $cooking_time;
+        $this->_cat_label = $cat_label;
     }
 
     /**
-     * @return integer
+     * @return mixed
      */
-    public function getPersons()
+    public function getCookingTime(): int
     {
-        return $this->persons;
+        return $this->_cooking_time;
     }
 
     /**
-     * @param integer $persons
+     * @param mixed $cooking_time
      */
-    public function setPersons($persons)
+    public function setCookingTime(int $cooking_time)
     {
-        $this->persons = $persons;
+        $this->_cooking_time = $cooking_time;
     }
 
     /**
-     * @return integer
+     * @return mixed
      */
-    public function getDifficulty()
+    public function getPersons(): int
     {
-        return $this->dif_id;
+        return $this->_persons;
     }
 
     /**
-     * @param integer $dif_id
+     * @param mixed $persons
      */
-    public function setDifficulty($dif_id)
+    public function setPersons(int $persons)
     {
-        $this->dif_id = $dif_id;
+        $this->_persons = $persons;
     }
 
     /**
-     * @return integer
+     * @return mixed
      */
-    public function getRecipeDate()
+    public function getDifficultyLabel(): string
     {
-        return $this->recipe_date;
+        return $this->_dif_label;
     }
 
     /**
-     * @param integer $recipe_date
+     * @param mixed $dif_label
      */
-    public function setRecipeDate($recipe_date)
+    public function setDifficultyLabel(string $dif_label)
     {
-        $this->recipe_date = $recipe_date;
+        $this->_dif_label = $dif_label;
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getRecipeTitle()
+    public function getDifficultyId(): int
     {
-        return $this->recipe_title;
+        return $this->_difficultyId;
     }
 
     /**
-     * @param string $recipe_title
+     * @param mixed $dif_id
      */
-    public function setRecipeTitle($recipe_title)
+    public function setDifficultyId(int $dif_id)
     {
-        $this->recipe_title = $recipe_title;
+        $this->_difficultyId = $dif_id;
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getRecipeContent()
+    public function getRecipeDate(): string
     {
-        return $this->recipe_content;
+        return $this->_recipe_date;
     }
 
     /**
-     * @param string $recipe_content
+     * @param mixed $recipe_date
      */
-    public function setRecipeContent($recipe_content)
+    public function setRecipeDate(string $recipe_date)
     {
-        $this->recipe_content = $recipe_content;
+        $this->_recipe_date = $recipe_date;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getRecipeTitle(): string
+    {
+        return $this->_recipe_title;
+    }
+
+    /**
+     * @param mixed $recipe_title
+     */
+    public function setRecipeTitle(string $recipe_title)
+    {
+        $this->_recipe_title = $recipe_title;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRecipeContent(): string
+    {
+        return $this->_recipe_content;
+    }
+
+    /**
+     * @param mixed $recipe_content
+     */
+    public function setRecipeContent(string $recipe_content)
+    {
+        $this->_recipe_content = $recipe_content;
+    }
+
 }
