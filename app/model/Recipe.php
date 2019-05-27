@@ -1,23 +1,31 @@
 <?php
+
 namespace app\model;
 
-class Recipe
+class Recipe implements \JsonSerializable
 {
-    private $id;
-    private $nickname;
-    private $cat_label;
-    private $cooking_time;
-    private $persons;
-    private $dif_id;
-    private $recipe_date;
-    private $recipe_title;
-    private $recipe_content;
+    private $_recipe_id;
+    private $_nickname;
+    private $_image;
+    private $_category_id;
+    private $_category_label;
+    private $_cooking_time;
+    private $_persons;
+    private $_difficulty_label;
+    private $_difficulty_id;
+    private $_recipe_date;
+    private $_recipe_title;
+    private $_recipe_content;
+    private $_nb_comments;
 
     // = (array $recipes)
-    public function __construct(array $recipe){
+    public function __construct(array $recipe)
+    {
         $this->hydrate($recipe);
     }
-    public function hydrate($recipe) {
+
+    public function hydrate($recipe)
+    {
         foreach ($recipe as $key => $value) {
             $setter = 'set' . ucfirst($key);
             if (method_exists($this, $setter)) {
@@ -25,147 +33,227 @@ class Recipe
             }
         }
     }
-    /**
-     * @return integer
-     */
-    public function getRecipeId()
+
+    public function jsonSerialize()
     {
-        return $this->id;
+        return [
+            'id' => $this->_recipe_id,
+            'image' => $this->_image,
+            'title' => $this->_recipe_title,
+            'date' => $this->_recipe_date,
+            'nickname' => $this->_nickname,
+            'time' => $this->_cooking_time,
+            'category' => $this->_category_label,
+            'content' => $this->_recipe_content
+        ];
     }
 
     /**
-     * @param integer $id
+     * @return mixed
      */
-    public function setRecipeId($id)
+    public function getRecipeId(): int
     {
-        $this->id = $id;
+        return $this->_recipe_id;
     }
 
     /**
-     * @return string
+     * @param mixed $recipe_id
      */
-    public function getNickname()
+    public function setRecipeId(int $recipe_id)
     {
-        return $this->nickname;
+        $this->_recipe_id = $recipe_id;
     }
 
     /**
-     * @param string $nickname
+     * @return mixed
      */
-    public function setNickname($nickname)
+    public function getNickname(): string
     {
-        $this->nickname = $nickname;
+        return $this->_nickname;
     }
 
     /**
-     * @return string
+     * @param mixed $nickname
      */
-    public function getCategory()
+    public function setNickname(string $nickname)
     {
-        return $this->cat_label;
+        $this->_nickname = $nickname;
     }
 
     /**
-     * @param string $cat_label
+     * @return mixed
      */
-    public function setCategory($cat_label)
+    public function getImage()
     {
-        $this->cat_label = $cat_label;
+        return $this->_image;
     }
 
     /**
-     * @return integer
+     * @param mixed $image
      */
-    public function getCookingTime()
+    public function setImage($image)
     {
-        return $this->cooking_time;
+        $this->_image = $image;
     }
 
     /**
-     * @param integer $cooking_time
+     * @return mixed
      */
-    public function setCookingTime($cooking_time)
+    public function getCategoryId(): int
     {
-        $this->cooking_time = $cooking_time;
+        return $this->_category_id;
     }
 
     /**
-     * @return integer
+     * @param mixed $category_id
      */
-    public function getPersons()
+    public function setCategoryId(int $category_id)
     {
-        return $this->persons;
+        $this->_category_id = $category_id;
     }
 
     /**
-     * @param integer $persons
+     * @return mixed
      */
-    public function setPersons($persons)
+    public function getCategoryLabel(): string
     {
-        $this->persons = $persons;
+        return $this->_category_label;
     }
 
     /**
-     * @return integer
+     * @param mixed $category_label
      */
-    public function getDifficulty()
+    public function setCategoryLabel(string $category_label)
     {
-        return $this->dif_id;
+        $this->_category_label = $category_label;
     }
 
     /**
-     * @param integer $dif_id
+     * @return mixed
      */
-    public function setDifficulty($dif_id)
+    public function getCookingTime(): int
     {
-        $this->dif_id = $dif_id;
+        return $this->_cooking_time;
     }
 
     /**
-     * @return integer
+     * @param mixed $cooking_time
      */
-    public function getRecipeDate()
+    public function setCookingTime(int $cooking_time)
     {
-        return $this->recipe_date;
+        $this->_cooking_time = $cooking_time;
     }
 
     /**
-     * @param integer $recipe_date
+     * @return mixed
      */
-    public function setRecipeDate($recipe_date)
+    public function getPersons(): int
     {
-        $this->recipe_date = $recipe_date;
+        return $this->_persons;
     }
 
     /**
-     * @return string
+     * @param mixed $persons
      */
-    public function getRecipeTitle()
+    public function setPersons(int $persons)
     {
-        return $this->recipe_title;
+        $this->_persons = $persons;
     }
 
     /**
-     * @param string $recipe_title
+     * @return mixed
      */
-    public function setRecipeTitle($recipe_title)
+    public function getDifficultyLabel(): string
     {
-        $this->recipe_title = $recipe_title;
+        return $this->_difficulty_label;
     }
 
     /**
-     * @return string
+     * @param mixed $difficulty_label
      */
-    public function getRecipeContent()
+    public function setDifficultyLabel(string $difficulty_label)
     {
-        return $this->recipe_content;
+        $this->_difficulty_label = $difficulty_label;
     }
 
     /**
-     * @param string $recipe_content
+     * @return mixed
      */
-    public function setRecipeContent($recipe_content)
+    public function getDifficultyId(): int
     {
-        $this->recipe_content = $recipe_content;
+        return $this->_difficulty_id;
     }
+
+    /**
+     * @param mixed $difficulty_id
+     */
+    public function setDifficultyId(int $difficulty_id)
+    {
+        $this->_difficulty_id = $difficulty_id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRecipeDate(): string
+    {
+        return $this->_recipe_date;
+    }
+
+    /**
+     * @param mixed $recipe_date
+     */
+    public function setRecipeDate(string $recipe_date)
+    {
+        $this->_recipe_date = $recipe_date;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRecipeTitle(): string
+    {
+        return $this->_recipe_title;
+    }
+
+    /**
+     * @param mixed $recipe_title
+     */
+    public function setRecipeTitle(string $recipe_title)
+    {
+        $this->_recipe_title = $recipe_title;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRecipeContent(): string
+    {
+        return $this->_recipe_content;
+    }
+
+    /**
+     * @param mixed $recipe_content
+     */
+    public function setRecipeContent(string $recipe_content)
+    {
+        $this->_recipe_content = $recipe_content;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNbComments() : int
+    {
+        return $this->_nb_comments;
+    }
+
+    /**
+     * @param mixed $nb_comments
+     */
+    public function setNbComments(int $nb_comments)
+    {
+        $this->_nb_comments = $nb_comments;
+    }
+
 }

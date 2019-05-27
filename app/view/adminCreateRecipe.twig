@@ -1,0 +1,63 @@
+{% extends "template.twig" %}
+{% block body %}
+    <h3>Créer une recette</h3>
+    <div>
+        <form action="{{ baseUrl }}/admin/createrecipe" method="post" class="form-group" enctype="multipart/form-data">
+            <label for="title"><strong>Titre de la recette :</strong></label><br/>
+            <input type="text" id="title" name="title" class="form-control form-control-md"><br/>
+            <div class="form-group">
+                <label for="file-upload" required><strong>Uploader une image</strong></label>
+                <input type="file" name="image" class="form-control-file" id="file-upload">
+                {% if errors.fileSize %}
+                    <p>Le fichier ne doit pas dépasser 5mo</p>
+                {% endif %}
+                {% if errors.wrongType %}
+                    <p>Mauvaise extension. Choisissez un JPG, GIF, ou PNG</p>
+                {% endif %}
+            </div>
+            <select name="difficulty-id" class="create-difficulty form-control my-2 w-25" required>
+                <option value="">-> Difficulté</option>
+                <option value="1">Facile</option>
+                <option value="2">Moyen</option>
+                <option value="3">Difficile</option>
+            </select>
+            <select name="category-id" class="create-categories form-control my-2 w-25" required>
+                <option value="">-> Catégories</option>
+                <option value="1">Entrée</option>
+                <option value="2">Amuse-bouche</option>
+                <option value="3">Plat</option>
+                <option value="4">Accompagnement</option>
+                <option value="5">Dessert</option>
+            </select>
+            <select name="persons" class="create-persons form-control my-2 w-25" required>
+                <option value="">-> Nombre de pers.</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+            </select>
+            <select name="cooking-time" class="create-time form-control my-2 w-25" required>
+                <option value="">-> Temps (mn)</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="25">25</option>
+                <option value="30">30</option>
+            </select>
+            {#<div id="dynamicInput">#}
+            {#<label for="ingredients"><strong>Ingrédients :</strong></label><br/>#}
+            {#Ingrédient 1#}
+            {#<br><input type="text" name="ingredients[]" class="input-ingredient" required>#}
+            {#Quantité<input type='text' name='quantities[]' required>#}
+            {#Unité<input type='text' name='units[]' required>#}
+            {#<input type="button" id="ingredients" value="Ajouter un ingrédient">#}
+            {#</div>#}
+            <label for="content"><strong>Contenu : </strong></label><br/>
+            <textarea id="post-area" name="content" class="form-control form-control-md"></textarea>
+            <input type="submit" value="Envoyer" class="btn btn-primary p-1 my-2"/>
+
+        </form>
+        <p><a href="{{ baseUrl }}" class="btn btn-secondary p-1">Retour</a></p>
+    </div>
+{% endblock %}

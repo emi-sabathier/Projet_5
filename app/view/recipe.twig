@@ -1,35 +1,43 @@
 {% extends "template.twig" %}
 {% block body %}
-    <h4>Recette : {{ recipe.recipeTitle }}</h4>
+    <h4 xmlns="http://www.w3.org/1999/html">Recette : {{ recipe.recipeTitle }}</h4>
+    <div>
+        <img src="{{ baseUrl }}/app/public/images/{{ recipe.image }}" alt="image de la recette">
+    </div>
     <div>
         <p>De <strong>{{ recipe.nickname }}</strong> à {{ recipe.recipeDate }}</p>
-        <p>Catégorie: {{ recipe.category }}</p>
+        <p>Catégorie: {{ recipe.categoryLabel }}</p>
         <p>Temps: {{ recipe.cookingTime }}mn</p>
         <p>Personnes: {{ recipe.persons }}</p>
-        <p>Difficulté: {{ recipe.difficulty }}</p>
-        <p>{{ recipe.recipeContent }}</p>
-
-        <form action="index.php?action=postComment&amp;postId=<?=$post['id']?>" method="post" class="form-group">
-            <div>
+        <p>Difficulté: {{ recipe.difficultyLabel }}</p>
+        <p>{{ recipe.recipeContent|raw }}</p>
+        {% if session.id %}
+            <div id="comment-form">
                 <label for="comment">Commentaire</label><br/>
-                <textarea id="comment" name="comment" cols="50" rows="5" required class="form-control form-control-sm"></textarea>
+                <textarea id="comment" name="comment" cols="50" rows="5" required
+                          class="form-control form-control-sm"></textarea>
+                <button type="submit" data-id="{{ recipe.recipeId }}"
+                        class="post-comment btn btn-primary mt-3 mb-0 p-1">Envoyer
+                </button>
             </div>
-            <div>
-                <input type="submit" value="Envoyer" class="btn btn-primary mt-3 mb-0 p-1"/>
-            </div>
-        </form>
-
-        {% for comment in listComments %}
-            <p>
-                <strong>{{ comment.nickname }}</strong>
-                Le
-                {{ comment.date }}
-                <a href="#" class="btn btn-danger p-1">Signaler</a>
-            </p>
-            <p>
-                {{ comment.content }}
-            </p>
-        {% endfor %}
-        <a href="javascript:history.go(-1)" class="btn btn-secondary p-1 text-center">Retour</a></p>
+        {% else %}
+            <p><strong>Vous devez être logué pour pouvoir poster un commentaire</strong></p>
+        {% endif %}
+        <section id="comments">
+            {% for comment in comments %}
+                <div data-id="comment-{{ comment.commentId }}">
+                    <strong>{{ comment.nickname }}</strong>
+                    <span>Le {{ comment.date }}</span>
+                    {% if session.id %}
+                        <button data-id="{{ comment.commentId }}" class="report-comment btn btn-danger p-1">Signaler
+                        </button>
+                    {% endif %}
+                    <p>
+                        {{ comment.content }}
+                    </p>
+                </div>
+            {% endfor %}
+        </section>
+        <a href="{{ baseUrl }}" class="btn btn-secondary p-1 text-center">Retour</a></p>
     </div>
 {% endblock %}

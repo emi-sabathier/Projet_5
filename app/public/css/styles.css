@@ -1,0 +1,20 @@
+.search-bar {
+    position: relative;
+}
+
+.display-results {
+    list-style-type: none;
+}
+
+.card-recipe-label {
+    top: -25px;
+    left: 5px;
+}
+
+.card-recipe-infos{
+    font-size:0.7rem;
+}
+
+.card-recipe {
+
+}

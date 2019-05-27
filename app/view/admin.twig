@@ -1,0 +1,64 @@
+{% extends "template.twig" %}
+{% block body %}
+    <h2>Panneau d'administration</h2>
+    <a href="{{ baseUrl }}/admin/recipeform" class="btn btn-primary p-1">Créer une recette</a>
+    <h4>Commentaires signalés</h4>
+    {% if listReportedComments is empty %}
+        <p>Il n'y a aucun commentaire signalé</p>
+    {% else %}
+        <table class="text-center table-striped table-borderless table-responsive table w-100 d-block d-sm-table d-md-table">
+            <thead class="thead-dark">
+            <tr>
+                <th>Titre</th>
+                <th>Auteur</th>
+                <th>Commentaire</th>
+                <th>Signalement</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            {% for reportedComment in listReportedComments %}
+                <tr>
+                    <td>{{ reportedComment.recipeTitle }}</td>
+                    <td>{{ reportedComment.nickname }}</td>
+                    <td>{{ reportedComment.content }}</td>
+                    <td>{{ reportedComment.report }}</td>
+                    <td class="btn-group" role="group" aria-label="actions">
+                        <button data-id="{{ reportedComment.commentId }}" class="delete-comment btn btn-danger p-1">
+                            Effacer
+                        </button>
+                        <button data-id="{{ reportedComment.commentId }}" class="reset-report btn btn-secondary p-1">
+                            Annuler
+                        </button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+    <h4>Liste des recettes</h4>
+
+    <table class="text-center table-striped table-borderless table-responsive table w-100 d-block d-sm-table d-md-table">
+        <thead class="thead-dark">
+        <tr>
+            <th>Titre</th>
+            <th>Date</th>
+            <th>Catégorie</th>
+            <th>Commentaires</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+
+        {% for recipe in listRecipes %}
+            <tr class="recipe">
+                <td><a href="{{ baseUrl }}/recipes/id/{{ recipe.recipeId }}" target="_blank">{{ recipe.recipeTitle }}</a></td>
+                <td>{{ recipe.recipeDate }}</td>
+                <td><a href="{{ baseUrl }}/admin/category/{{ recipe.categoryId }}">{{ recipe.categoryLabel }}</a></td>
+                <td>{{ recipe.nbComments }}</td>
+                <td class="btn-group" role="group" aria-label="actions">
+                    <a href="{{ baseUrl }}/admin/updateform/{{ recipe.recipeId }}" class="btn btn-secondary">Modifier</a>
+                    <button data-id="{{ recipe.recipeId }}" class="delete-recipe btn btn-danger">Effacer</button>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <a href="{{ baseUrl }}" class="btn btn-secondary p-1 text-center">Retour</a></p>
+{% endblock %}

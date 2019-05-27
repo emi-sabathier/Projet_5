@@ -1,0 +1,23 @@
+{% extends 'template.twig' %}
+{% block body %}
+    <h4>Recettes de la catégorie {{ categoryLabel }}</h4>
+    <div class="row">
+        <div class="card-deck">
+            {% for recipe in listRecipesByCat %}
+                <div class="col-sm-6 col-md-4 col-lg-12 mx-auto">
+                    <article class="bg-light card mb-4">
+                        <div>
+                            <img src="{{ baseUrl }}/app/public/images/{{ recipe.image }}" alt="image de la recette">
+                        </div>
+                        <div>
+                            <span class="badge badge-success">{{ recipe.categoryLabel }}</span>
+                            <h3><strong>{{ recipe.recipeTitle }}</strong></h3>
+                            <p>De <strong>{{ recipe.nickname }}</strong> à {{ recipe.recipeDate }}</p>
+                            <p class="text-center"><a href="{{ baseUrl }}/recipes/id/{{ recipe.recipeId }}" class="btn btn-primary p-1">Voir la recette</a></p>
+                        </div>
+                    </article>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

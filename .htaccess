@@ -2,3 +2,5 @@ RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . index.php [L]
+RewriteCond %{HTTPS} ^on$
+RewriteRule ^(.*)$ http://localhost:8080/Projets/Projet_5/$1 [NC,L,R]
