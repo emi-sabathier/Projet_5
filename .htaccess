@@ -4,3 +4,4 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . index.php [L]
 RewriteCond %{HTTPS} ^on$
 RewriteRule ^(.*)$ http://localhost:8080/Projets/Projet_5/$1 [NC,L,R]
+ErrorDocument 404 http://localhost:8080/Projets/Projet_5/app/view/error.twig

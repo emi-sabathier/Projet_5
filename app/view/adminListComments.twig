@@ -1,0 +1,29 @@
+{% extends 'template.twig' %}
+{% block body %}
+    <h2>Panneau d'administration</h2>
+    <h5>Liste des commentaires</h5>
+    <table class="text-center table-striped table-borderless table-responsive table w-100 d-block d-sm-table d-md-table">
+        <thead class="thead-dark">
+        <tr>
+            <th>Auteur</th>
+            <th>Date</th>
+            <th>Commentaire</th>
+            <th>Action</th>
+        </tr>  
+        </thead>
+        {% for comment in listComments %}
+            <tr class="recipe">
+                <td>{{ comment.nickname }}</td>
+                <td>{{ comment.date }}</td>
+                <td>{{ comment.content }}</td>
+                <td class="btn-group" role="group" aria-label="actions">
+                    <button data-id="{{ comment.commentId }}" class="delete-comment btn btn-danger">Effacer</button>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+{% block scripts %}
+    <script src="{{ baseUrl }}/app/public/js/AdminPanel.js"></script>
+    <script src="{{ baseUrl }}/app/public/js/admin.js"></script>
+{% endblock %}

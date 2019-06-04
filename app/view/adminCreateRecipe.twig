@@ -6,7 +6,7 @@
             <label for="title"><strong>Titre de la recette :</strong></label><br/>
             <input type="text" id="title" name="title" class="form-control form-control-md"><br/>
             <div class="form-group">
-                <label for="file-upload" required><strong>Uploader une image</strong></label>
+                <label for="file-upload" required><strong>Uploader une image (Resizée en 640x480)</strong></label>
                 <input type="file" name="image" class="form-control-file" id="file-upload">
                 {% if errors.fileSize %}
                     <p>Le fichier ne doit pas dépasser 5mo</p>
@@ -45,19 +45,13 @@
                 <option value="25">25</option>
                 <option value="30">30</option>
             </select>
-            {#<div id="dynamicInput">#}
-            {#<label for="ingredients"><strong>Ingrédients :</strong></label><br/>#}
-            {#Ingrédient 1#}
-            {#<br><input type="text" name="ingredients[]" class="input-ingredient" required>#}
-            {#Quantité<input type='text' name='quantities[]' required>#}
-            {#Unité<input type='text' name='units[]' required>#}
-            {#<input type="button" id="ingredients" value="Ajouter un ingrédient">#}
-            {#</div>#}
             <label for="content"><strong>Contenu : </strong></label><br/>
             <textarea id="post-area" name="content" class="form-control form-control-md"></textarea>
             <input type="submit" value="Envoyer" class="btn btn-primary p-1 my-2"/>
-
         </form>
-        <p><a href="{{ baseUrl }}" class="btn btn-secondary p-1">Retour</a></p>
+        <p><a href="{{ baseUrl }}/admin" class="btn btn-secondary p-1">Retour</a></p>
     </div>
+{% endblock %}
+{% block scripts %}
+    <script src="{{ baseUrl }}/app/public/js/tiny.js"></script>
 {% endblock %}

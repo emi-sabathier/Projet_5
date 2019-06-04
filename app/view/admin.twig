@@ -13,7 +13,7 @@
                 <th>Auteur</th>
                 <th>Commentaire</th>
                 <th>Signalement</th>
-                <th>Action</th>
+                <th>Actions</th>
             </tr>
             </thead>
             {% for reportedComment in listReportedComments %}
@@ -35,7 +35,6 @@
         </table>
     {% endif %}
     <h4>Liste des recettes</h4>
-
     <table class="text-center table-striped table-borderless table-responsive table w-100 d-block d-sm-table d-md-table">
         <thead class="thead-dark">
         <tr>
@@ -46,19 +45,23 @@
             <th>Actions</th>
         </tr>
         </thead>
-
-        {% for recipe in listRecipes %}
-            <tr class="recipe">
-                <td><a href="{{ baseUrl }}/recipes/id/{{ recipe.recipeId }}" target="_blank">{{ recipe.recipeTitle }}</a></td>
-                <td>{{ recipe.recipeDate }}</td>
-                <td><a href="{{ baseUrl }}/admin/category/{{ recipe.categoryId }}">{{ recipe.categoryLabel }}</a></td>
-                <td>{{ recipe.nbComments }}</td>
-                <td class="btn-group" role="group" aria-label="actions">
-                    <a href="{{ baseUrl }}/admin/updateform/{{ recipe.recipeId }}" class="btn btn-secondary">Modifier</a>
-                    <button data-id="{{ recipe.recipeId }}" class="delete-recipe btn btn-danger">Effacer</button>
-                </td>
-            </tr>
-        {% endfor %}
+        <tbody id="admin-list-recipes">
+        </tbody>
     </table>
+    <div class="row">
+        <div class="mx-auto  my-5">
+            <nav>
+                <ul class="pagination">
+                    {% for page in 1..pagesInfos.nbPages %}
+                        <li class="page-item"><a class="page-link" data-id="{{ page }}" href="#">{{ page }}</a></li>
+                    {% endfor %}
+                </ul>
+            </nav>
+        </div>
+    </div>
     <a href="{{ baseUrl }}" class="btn btn-secondary p-1 text-center">Retour</a></p>
+{% endblock %}
+{% block scripts %}
+    <script src="{{ baseUrl }}/app/public/js/AdminPanel.js"></script>
+    <script src="{{ baseUrl }}/app/public/js/admin.js"></script>
 {% endblock %}

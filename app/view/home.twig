@@ -26,4 +26,20 @@
             {% endfor %}
         </div>
     </div>
+    <div class="row">
+        <div class="mx-auto  my-5">
+            <nav>
+                <ul class="pagination">
+                    {% for page in 1..pagesInfos.nbPages %}
+                         <li class="page-item"><a class="page-link" data-id="{{ page }}" href="#">{{ page }}</a></li>
+                    {% endfor %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script src="{{ baseUrl }}/app/public/js/Recipes.js"></script>
+    <script src="{{ baseUrl }}/app/public/js/Comments.js"></script>
+    <script src="{{ baseUrl }}/app/public/js/main.js"></script>
 {% endblock %}

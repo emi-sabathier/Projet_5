@@ -9,10 +9,9 @@
           integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="app/public/css/styles.css">
+    <link rel="stylesheet" href="{{ baseUrl }}/app/public/css/styles.css">
     <script src="https://cloud.tinymce.com/5/tinymce.min.js?apiKey=un6psb60cfyj1tbk6h05mqrroi6vz31e7vrb5wpefkx4o9uy">
     </script>
-    <script src="app/public/js/tiny.js"></script>
 </head>
 
 <body>
@@ -24,9 +23,11 @@
             {% if session is defined %}
                 {% if session.role == 1 %}
                     <a href="{{ baseUrl }}/admin" class="text-white btn btn-secondary"><i class="fas fa-user-lock"></i></a>
-                    <a href="{{ baseUrl }}/disconnect" class="text-white btn btn-danger"><i class="fas fa-sign-out-alt"></i></a>
+                    <a href="{{ baseUrl }}/disconnect" class="text-white btn btn-danger"><i
+                                class="fas fa-sign-out-alt"></i></a>
                 {% elseif session.role == 0 %}
-                    <a href="{{ baseUrl }}/disconnect" class="text-white btn btn-danger"><i class="fas fa-sign-out-alt"></i></a>
+                    <a href="{{ baseUrl }}/disconnect" class="text-white btn btn-danger"><i
+                                class="fas fa-sign-out-alt"></i></a>
                 {% endif %}
             {% else %}
                 <a href="{{ baseUrl }}/authform" class="text-white btn btn-success"><i class="fas fa-user"></i></a>
@@ -37,9 +38,7 @@
     {% endblock %}
 </div>
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-<script src="{{ baseUrl }}/app/public/js/Comments.js"></script>
-<script src="{{ baseUrl }}/app/public/js/Recipes.js"></script>
-<script src="{{ baseUrl }}/app/public/js/main.js"></script>
+{% block scripts %}{% endblock %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
 </script>
@@ -47,5 +46,4 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
 </script>
 </body>
-
 </html>

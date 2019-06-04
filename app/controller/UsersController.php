@@ -11,14 +11,13 @@ class UsersController extends AppController
     public function adminPanel(){
         if(isset($_SESSION['user'])) {
             if($_SESSION['user']->getRole() == 1){
-                $recipesManager = new RecipesManager();
                 $commentsManager = new CommentsManager();
-                $listRecipes = $recipesManager->getRecipes();
                 $listReportedComments = $commentsManager->getReportedComments();
+                $pagesInfos = $this->getRecipesByPageAdmin();
 
                 echo $this->twig->render('admin.twig', [
-                    'listRecipes' => $listRecipes,
-                    'listReportedComments' => $listReportedComments
+                    'listReportedComments' => $listReportedComments,
+                    'pagesInfos' => $pagesInfos
                 ]);
             } else {
                 header('Location: ' . BASEURL);
@@ -29,7 +28,35 @@ class UsersController extends AppController
             exit;
         }
     }
+    public function getRecipesByPageAdmin()
+    {
+        $recipesManager = new RecipesManager();
+        $nbRecipes = $recipesManager->countRecipes();
+        $nbRecipesByPage = 4;
+        $nbPages = ceil($nbRecipes / $nbRecipesByPage);
 
+        if (isset($_POST['pageNumber']) && $_POST['pageNumber'] > 0 && !empty($_POST['pageNumber']) && $_POST['pageNumber'] <= $nbPages) {
+            $currentPage = $_POST['pageNumber'];
+            $offset = ($currentPage - 1) * $nbRecipesByPage;
+            $listRecipes = $recipesManager->getRecipesByPage($nbRecipesByPage, $offset);
+
+            echo json_encode([
+                'status' => 'success',
+                'recipes' => $listRecipes
+            ]);
+
+        } else {
+            $currentPage = 1;
+            $offset = ($currentPage - 1) * $nbRecipesByPage;
+            $recipesManager->getRecipesByPage($nbRecipesByPage, $offset);
+        }
+
+        $pagesInfos = [
+            'nbPages' => $nbPages,
+            'currentPage' => $currentPage
+        ];
+        return $pagesInfos;
+    }
     public function loginForm($compactVars = null)
     {
         if ($compactVars == null) {

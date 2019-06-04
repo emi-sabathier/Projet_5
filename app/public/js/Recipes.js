@@ -1,30 +1,41 @@
 class Recipes {
     constructor(baseurl) {
         this.baseUrl = baseurl;
-        this.displayRecipes();
+        this.displayLastRecipesHome();
         $('#keyword').on('input', this.searchRecipe.bind(this));
-        $('.delete-recipe').on('click', this.deleteRecipe.bind(this));
+        $('.page-link').on('click', this.displayRecipesByPageHome.bind(this));
     }
-
- displayRecipes() {
-        $.get(this.baseUrl + '/displayRecipes', (response) => {
+    displayLastRecipesHome() {
+        $.get(this.baseUrl + '/displayLastRecipes', (response) => {
             if (response.status === 'success') {
                 $('#list-recipes').empty();
                 response.recipes.forEach((recipe) => {
-                    this.createRecipe(recipe);
+                    this.createRecipeCard(recipe);
                 });
             } else {
                 $('<p>').text('Impossible de charger les recettes');
             }
         }, 'JSON');
     }
-
-    createRecipe(recipe) {
+    displayRecipesByPageHome(e) {
+        let pageNumber = $(e.target).attr('data-id');
+        $.post(this.baseUrl + '/page', {pageNumber: pageNumber}, (response) => {
+            if (response.status === 'success') {
+                $('#list-recipes').empty();
+                response.recipes.forEach((recipe) => {
+                    this.createRecipeCard(recipe);
+                });
+            } else {
+                $('<p>').text('Impossible de charger les recettes');
+            }
+        }, 'JSON');
+    }
+    createRecipeCard(recipe) {
         $('#list-recipes').append([
             $('<article>', {'class': 'card card-recipe'}).append(
                 $('<img>', {
-                    'src': this.baseUrl + '/app/public/images/' + recipe.image,
-                    'height': '200px'
+                    'src': this.baseUrl + '/app/public/images/resized/' + recipe.image,
+                    'class' : 'w-100'
                 }),
                 $('<div>', {
                     'class': 'card-body text-center position-relative'
@@ -40,7 +51,7 @@ class Recipes {
                     }).html(' De ' + '<strong>' + recipe.nickname + '</strong> le ' + recipe.date),
                     $('<a>', {
                         'class' : 'btn btn-primary p-1',
-                        'href' : 'recipes/id/' + recipe.id
+                        'href' : 'id/' + recipe.id
                     }).text('Voir recette')
                 )
             )
@@ -55,28 +66,15 @@ class Recipes {
             if (response.status === 'success') {
 
                 if (keyword === '') { // vide
-                    this.displayRecipes();
+                    this.displayLastRecipesHome();
                 } else {
                     listRecipe.empty();
                     response.recipes.forEach((recipe) => {
-                        this.createRecipe(recipe);
+                        this.createRecipeCard(recipe);
                     });
                 }
             } else if (response.status === 'empty') {
                 listRecipe.empty();
-            }
-        }, 'JSON');
-    }
-
-    deleteRecipe(e) {
-        let targetButton = $(e.target); // élément HTML
-        let id = targetButton.attr('data-id'); // data id de l'élément
-        $.post(this.baseUrl + '/admin/deleterecipe', {recipeId: id}, (response) => {
-            if (response === 'success') {
-                let trRecipe = targetButton.parent().parent();
-                trRecipe.remove();
-            } else {
-                console.log('Une erreur est survenue');
             }
         }, 'JSON');
     }

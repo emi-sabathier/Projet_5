@@ -44,7 +44,9 @@ class Recipe implements \JsonSerializable
             'nickname' => $this->_nickname,
             'time' => $this->_cooking_time,
             'category' => $this->_category_label,
-            'content' => $this->_recipe_content
+            'categoryId' => $this->_category_id,
+            'content' => $this->_recipe_content,
+            'nbComments' => $this->_nb_comments
         ];
     }
 

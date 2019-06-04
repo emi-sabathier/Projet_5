@@ -4,7 +4,7 @@ namespace app\controller;
 
 class AppController
 {
-    protected $twig;
+//    protected $twig;
 
     public function __construct()
     {
@@ -15,5 +15,8 @@ class AppController
         if(isset($_SESSION['user'])) {
             $this->twig->addGlobal('session', $_SESSION['user']);
         }
+    }
+    public function errorPage(){
+        echo $this->twig->render('error.twig');
     }
 }
