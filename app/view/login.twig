@@ -1,33 +1,32 @@
 {% extends "template.twig" %}
 {% block body %}
-<div>
-    <h3>Identifiez-vous</h3>
-    <form action="{{ baseUrl }}/login" method="post" class="form-group needs-validation" novalidate>
-        <label for="signinEmail">Login</label><br />
-        <div class="col-md-3 mb-3 pl-0">
-            <input type="text" id="signinEmail" name="signinEmail" class="form-control form-control-md"
-                   placeholder="Votre email" required />
-            {% if errors.noEmail %}
-                <p>L'identifiant n'existe pas</p>
-            {% endif %}
-        </div>
-        <div>
-            <label for="signinPwd">Mot de passe</label><br />
-            <div class="col-md-3 mb-3 pl-0">
-                <input type="password" id="signinPwd" name="signinPwd" rows="10"
-                       class="form-control form-control-md " placeholder="Votre mot de passe" required></textarea>
-                {% if errors.wrongPwd %}
-                    <p>Le mot de passe est incorrect</p>
-                {% endif %}
+    <div>
+        <h2 class="col-sm-12 col-md-12 col-lg-12 text-center">Identifiez-vous</h2>
+        <form action="{{ baseUrl }}/login" method="post" class="form-group mx-auto form-login needs-validation col-sm-6 col-md-6 col-lg-6 text-center" novalidate>
+            <div class="row justify-content-center mx-auto align-items-center flex-column">
+
+                <div>
+                    <label for="signinEmail"><strong>Login (votre email)</strong></label><br/>
+                    <input type="text" id="signinEmail" name="signinEmail" class="form-control form-control-lg"
+                           placeholder="Votre email" required/>
+                    {% if errors %}
+                        <p class="alert alert-danger">Un des champs est incorrect.</p>
+                    {% endif %}
+                </div>
+                <div>
+                    <label for="signinPwd"><strong>Mot de passe</strong></label><br/>
+                    <div>
+                        <input type="password" id="signinPwd" name="signinPwd" rows="10"
+                               class="form-control form-control-lg" placeholder="Votre mot de passe" required>
+                    </div>
+                    <p>Pas encore inscrit ? <a href="{{ baseUrl }}/register">c'est par ici</a></p>
+                    <div>
+                        <input type="submit" value="Envoyer" class="btn btn-primary p-1"/>
+                    </div>
+                </div>
             </div>
-        </div>
-        <p>Pas encore inscrit ? <a href="{{ baseUrl }}/register">c'est par ici</a></p>
-        <div>
-            <input type="submit" value="Envoyer" class="btn btn-primary p-1" />
-        </div>
-        {% if errors.emptyField %}
-            <p>Un des champs est vide.</p>
-        {% endif %}
-    </form>
-</div>
+        </form>
+        <a href="{{ baseUrl }}" class="btn btn-secondary p-1 text-center"><i class="fas fa-arrow-circle-left"></i>Retour</a>
+    </div>
+
 {% endblock %}

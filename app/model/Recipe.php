@@ -1,7 +1,5 @@
 <?php
-
 namespace app\model;
-
 class Recipe implements \JsonSerializable
 {
     private $_recipe_id;
@@ -34,6 +32,7 @@ class Recipe implements \JsonSerializable
         }
     }
 
+    //Returns data which can be used by json_encode()
     public function jsonSerialize()
     {
         return [
@@ -43,7 +42,7 @@ class Recipe implements \JsonSerializable
             'date' => $this->_recipe_date,
             'nickname' => $this->_nickname,
             'time' => $this->_cooking_time,
-            'category' => $this->_category_label,
+            'categoryLabel' => $this->_category_label,
             'categoryId' => $this->_category_id,
             'content' => $this->_recipe_content,
             'nbComments' => $this->_nb_comments
@@ -51,7 +50,7 @@ class Recipe implements \JsonSerializable
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getRecipeId(): int
     {
@@ -59,7 +58,7 @@ class Recipe implements \JsonSerializable
     }
 
     /**
-     * @param mixed $recipe_id
+     * @param int $recipe_id
      */
     public function setRecipeId(int $recipe_id)
     {
@@ -67,7 +66,7 @@ class Recipe implements \JsonSerializable
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getNickname(): string
     {
@@ -75,7 +74,7 @@ class Recipe implements \JsonSerializable
     }
 
     /**
-     * @param mixed $nickname
+     * @param string $nickname
      */
     public function setNickname(string $nickname)
     {
@@ -83,23 +82,23 @@ class Recipe implements \JsonSerializable
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getImage()
+    public function getImage() :string
     {
         return $this->_image;
     }
 
     /**
-     * @param mixed $image
+     * @param string $image
      */
-    public function setImage($image)
+    public function setImage(string $image)
     {
         $this->_image = $image;
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getCategoryId(): int
     {
@@ -107,7 +106,7 @@ class Recipe implements \JsonSerializable
     }
 
     /**
-     * @param mixed $category_id
+     * @param int $category_id
      */
     public function setCategoryId(int $category_id)
     {
@@ -115,7 +114,7 @@ class Recipe implements \JsonSerializable
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getCategoryLabel(): string
     {
@@ -123,7 +122,7 @@ class Recipe implements \JsonSerializable
     }
 
     /**
-     * @param mixed $category_label
+     * @param string $category_label
      */
     public function setCategoryLabel(string $category_label)
     {
@@ -131,7 +130,7 @@ class Recipe implements \JsonSerializable
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getCookingTime(): int
     {
@@ -139,7 +138,7 @@ class Recipe implements \JsonSerializable
     }
 
     /**
-     * @param mixed $cooking_time
+     * @param int $cooking_time
      */
     public function setCookingTime(int $cooking_time)
     {
@@ -147,7 +146,7 @@ class Recipe implements \JsonSerializable
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getPersons(): int
     {
@@ -155,7 +154,7 @@ class Recipe implements \JsonSerializable
     }
 
     /**
-     * @param mixed $persons
+     * @param int $persons
      */
     public function setPersons(int $persons)
     {
@@ -163,7 +162,7 @@ class Recipe implements \JsonSerializable
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getDifficultyLabel(): string
     {
@@ -171,7 +170,7 @@ class Recipe implements \JsonSerializable
     }
 
     /**
-     * @param mixed $difficulty_label
+     * @param string $difficulty_label
      */
     public function setDifficultyLabel(string $difficulty_label)
     {
@@ -179,7 +178,7 @@ class Recipe implements \JsonSerializable
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getDifficultyId(): int
     {
@@ -187,7 +186,7 @@ class Recipe implements \JsonSerializable
     }
 
     /**
-     * @param mixed $difficulty_id
+     * @param int $difficulty_id
      */
     public function setDifficultyId(int $difficulty_id)
     {
@@ -195,7 +194,7 @@ class Recipe implements \JsonSerializable
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getRecipeDate(): string
     {
@@ -203,7 +202,7 @@ class Recipe implements \JsonSerializable
     }
 
     /**
-     * @param mixed $recipe_date
+     * @param string $recipe_date
      */
     public function setRecipeDate(string $recipe_date)
     {
@@ -211,7 +210,7 @@ class Recipe implements \JsonSerializable
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getRecipeTitle(): string
     {
@@ -219,7 +218,7 @@ class Recipe implements \JsonSerializable
     }
 
     /**
-     * @param mixed $recipe_title
+     * @param string $recipe_title
      */
     public function setRecipeTitle(string $recipe_title)
     {
@@ -227,7 +226,7 @@ class Recipe implements \JsonSerializable
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getRecipeContent(): string
     {
@@ -235,7 +234,7 @@ class Recipe implements \JsonSerializable
     }
 
     /**
-     * @param mixed $recipe_content
+     * @param string $recipe_content
      */
     public function setRecipeContent(string $recipe_content)
     {
@@ -243,15 +242,15 @@ class Recipe implements \JsonSerializable
     }
 
     /**
-     * @return mixed
+     * @return int
      */
-    public function getNbComments() : int
+    public function getNbComments(): int
     {
         return $this->_nb_comments;
     }
 
     /**
-     * @param mixed $nb_comments
+     * @param int $nb_comments
      */
     public function setNbComments(int $nb_comments)
     {

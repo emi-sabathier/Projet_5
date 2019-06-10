@@ -1,23 +1,28 @@
 {% extends 'template.twig' %}
 {% block body %}
-    <h4>Recettes de la catégorie {{ categoryLabel }}</h4>
-    <div class="row">
-        <div class="card-deck">
+    <h2 class="text-center">Recettes de la catégorie {{ categoryLabel }}</h2>
+    <div class="card-group">
+        {% if listRecipesByCat is empty %}
+            <p class="mx-auto">Aucune recette dans la catégorie</p>
+        {% else %}
             {% for recipe in listRecipesByCat %}
-                <div class="col-sm-6 col-md-4 col-lg-12 mx-auto">
-                    <article class="bg-light card mb-4">
-                        <div>
-                            <img src="{{ baseUrl }}/app/public/images/{{ recipe.image }}" alt="image de la recette">
-                        </div>
-                        <div>
-                            <span class="badge badge-success">{{ recipe.categoryLabel }}</span>
-                            <h3><strong>{{ recipe.recipeTitle }}</strong></h3>
-                            <p>De <strong>{{ recipe.nickname }}</strong> à {{ recipe.recipeDate }}</p>
-                            <p class="text-center"><a href="{{ baseUrl }}/id/{{ recipe.recipeId }}" class="btn btn-primary p-1">Voir la recette</a></p>
-                        </div>
-                    </article>
-                </div>
+                <article class="animated fadeIn card-anim col-sm-6 col-md-4 col-lg-4 mx-auto">
+                    <div class="mb-3">
+                        <a href="{{ baseUrl }}/id/{{ recipe.recipeId }}"
+                           class="card card-recipe">
+                            <figure><img
+                                        src="{{ baseUrl }}/app/public/images/resized/{{ recipe.image }}"
+                                        class="w-100"></figure>
+                            <div class="position-absolute text-center w-100 text-white card-text"><span
+                                        class="badge badge-success position-absolute card-recipe-label">{{ recipe.categoryLabel }}</span>
+                                <h4>{{ recipe.recipeTitle }}</h4>
+                                <p><i class="fas fa-clock"></i> {{ recipe.cookingTime }} <i
+                                            class="fas fa-comment-dots"></i> {{ recipe.nbComments }}</p></div>
+                        </a></div>
+                </article>
+
             {% endfor %}
-        </div>
+        {% endif %}
     </div>
+    <a href="{{ baseUrl }}" class="btn btn-secondary p-1 text-center"><i class="fas fa-arrow-circle-left"></i>Retour</a>
 {% endblock %}

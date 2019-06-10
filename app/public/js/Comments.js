@@ -1,24 +1,29 @@
 class Comments {
+    /**
+     * @param baseurl URL du projet
+     */
     constructor(baseurl) {
         this.baseUrl = baseurl;
         $('.report-comment').on('click', this.reportComment.bind(this));
         $('.post-comment').on('click', this.postComment.bind(this));
     }
+
+    /**
+     * @param e Event object
+     */
     reportComment(e) {
         let idComment = $(e.target).attr('data-id');
         $.post(this.baseUrl + '/reportcomment', {commentId: idComment}, (response) => {
             if (response === 'success') {
-                const divElt = $('<div id="report-popup">').appendTo('#comments');
+                const divElt = $('<div id="report-popup" class="alert alert-success">').appendTo('#comments');
                 divElt.css(
                     {
                         "position": "absolute",
                         "top": "50%",
-                        "padding": "1rem",
+                        "padding": "3rem 1rem",
                         "font-weight": "bold",
                         "text-align": "center",
-                        "left": "40%",
-                        "background-color": "#fff",
-                        "border": "2px solid #000"
+                        "left": "40%"
                     });
                 divElt.text('Signalement envoyé');
                 setTimeout(() => {
@@ -30,6 +35,9 @@ class Comments {
         }, 'JSON');
     }
 
+    /**
+     * @param e Event object
+     */
     postComment(e) {
         e.preventDefault();
         let id = $('.post-comment').attr('data-id');
@@ -44,6 +52,7 @@ class Comments {
             $.post(this.baseUrl + '/postcomment', {recipeId: id, comment: commentVal}, (response) => {
 
                 if (response.status === 'success') {
+                    $('textarea#comment').val('');
                     $('section#comments').prepend([
                         $('<div>', {'data-id': response.comment.commentId}).append([
                             $('<strong>').text(response.comment.nickname),

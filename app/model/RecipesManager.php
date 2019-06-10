@@ -1,51 +1,14 @@
 <?php
-
 namespace app\model;
 
 class RecipesManager extends Manager {
-//	public function getAllRecipes() {
-//		try {
-//			$db = $this->dbconnect();
-//			$q = $db->query('
-//        SELECT COUNT(comments.id) AS nbComments,
-//        recipes.id AS recipeId, recipes.author_id, recipes.img_name, recipes.cat_id, recipes.dif_id,
-//        recipes.cooking_time, recipes.persons, recipes.recipe_title, recipes.recipe_content,
-//        users.nickname, categories.id AS categoryId, categories.cat_label, difficulty.id AS difficultyId, difficulty.dif_label, users.id AS userId,
-//        DATE_FORMAT(recipe_date, \'%d/%m/%Y à %Hh%i\')
-//        AS recipe_date
-//        FROM recipes
-//        LEFT JOIN comments ON recipes.id = comments.recipe_id
-//        INNER JOIN users ON recipes.author_id = users.id
-//        INNER JOIN categories ON recipes.cat_id = categories.id
-//        INNER JOIN difficulty ON recipes.dif_id = difficulty.id
-//        GROUP BY recipes.id
-//        ORDER BY recipe_date DESC
-//        ');
-//			$listRecipesObj = [];
-//			while ($recipe = $q->fetch()) {
-//				$dataRecipe = [
-//					'recipeId' => $recipe['recipeId'],
-//					'nickname' => $recipe['nickname'],
-//					'image' => $recipe['img_name'],
-//					'categoryId' => $recipe['cat_id'],
-//					'categoryLabel' => $recipe['cat_label'],
-//					'cookingTime' => $recipe['cooking_time'],
-//					'persons' => $recipe['persons'],
-//					'difficultyId' => $recipe['dif_id'],
-//					'difficultyLabel' => $recipe['dif_label'],
-//					'recipeDate' => $recipe['recipe_date'],
-//					'recipeTitle' => $recipe['recipe_title'],
-//					'recipeContent' => $recipe['recipe_content'],
-//					'nbComments' => $recipe['nbComments'],
-//				];
-//				// array dataRecipes envoyé à l'hydratation, qui renvoie les données à $listRecipesObj
-//				$listRecipesObj[] = new Recipe($dataRecipe);
-//			}
-//			return $listRecipesObj;
-//		} catch (\PDOException $pdoE) {
-//			throw new \Exception($pdoE->getMessage());
-//		}
-//	}
+    /**
+     * Get last 6 recipes (home)
+     *
+     * Create an object for each recipe and put inside the array $listRecipesObj
+     * @return array $listRecipesObj
+     * @throws \Exception
+     */
 	public function getLastRecipes() {
 		try {
 			$db = $this->dbconnect();
@@ -62,7 +25,7 @@ class RecipesManager extends Manager {
         INNER JOIN categories ON recipes.cat_id = categories.id
         INNER JOIN difficulty ON recipes.dif_id = difficulty.id
         GROUP BY recipes.id
-        ORDER BY recipeId DESC LIMIT 4 OFFSET 0
+        ORDER BY recipeId DESC LIMIT 6 OFFSET 0
         ');
 			$listRecipesObj = [];
 			while ($recipe = $q->fetch()) {
@@ -79,9 +42,9 @@ class RecipesManager extends Manager {
 					'recipeDate' => $recipe['recipe_date'],
 					'recipeTitle' => $recipe['recipe_title'],
 					'recipeContent' => $recipe['recipe_content'],
-					'nbComments' => $recipe['nbComments'],
+					'nbComments' => $recipe['nbComments']
 				];
-				// array dataRecipes envoyé à l'hydratation, qui renvoie les données à $listRecipesObj
+
 				$listRecipesObj[] = new Recipe($dataRecipe);
 			}
 			return $listRecipesObj;
@@ -89,6 +52,16 @@ class RecipesManager extends Manager {
 			throw new \Exception($pdoE->getMessage());
 		}
 	}
+
+    /**
+     * Get recipes of a page (pagination)
+     *
+     * Create an object for each recipe and put inside the array $listRecipesObj
+     * @param int $nbRecipesByPage
+     * @param int $offset
+     * @return array $listRecipesObj
+     * @throws \Exception
+     */
 	public function getRecipesByPage($nbRecipesByPage, $offset) {
 		try {
 			$db = $this->dbconnect();
@@ -124,7 +97,7 @@ class RecipesManager extends Manager {
 					'recipeDate' => $recipe['recipe_date'],
 					'recipeTitle' => $recipe['recipe_title'],
 					'recipeContent' => $recipe['recipe_content'],
-					'nbComments' => $recipe['nbComments'],
+					'nbComments' => $recipe['nbComments']
 				];
 				// array dataRecipes envoyé à l'hydratation, qui renvoie les données à $listRecipesObj
 				// crée un objet par recette
@@ -137,12 +110,14 @@ class RecipesManager extends Manager {
 		}
 	}
 
-	public function nbRecipesByPage($nbRecipesByPage, $offset) {
-		$db = $this->dbconnect();
-		$q = $db->prepare('SELECT * FROM recipes ORDER BY id LIMIT ' . $nbRecipesByPage . ' OFFSET ' . $offset);
-		$q->execute(array($nbRecipesByPage, $offset));
-	}
-
+    /**
+     * Get a recipe
+     *
+     * @param int $recipeId
+     * @return Recipe|bool
+     * If true, create an object $recipeObj
+     * @throws \Exception
+     */
 	public function getRecipe($recipeId) {
 		try {
 			$db = $this->dbconnect();
@@ -160,7 +135,7 @@ class RecipesManager extends Manager {
         WHERE recipes.id = ?');
 			$q->execute(array($recipeId));
 			$recipe = $q->fetch();
-			// Soit renvoie false, ou renvoie les données recettes
+
 			if ($recipe != false) {
 				$dataRecipe = [
 					'recipeId' => $recipe['recipeId'],
@@ -186,21 +161,30 @@ class RecipesManager extends Manager {
 		}
 	}
 
+    /**
+     * Get recipes of a category
+     *
+     * @param int $categoryId
+     * Create an object for each recipe and put inside the array $listRecipesObj
+     * @return array $listRecipesObj
+     * @throws \Exception
+     */
 	public function getRecipesByCat($categoryId) {
 		try {
 			$db = $this->dbconnect();
 			$q = $db->prepare
-				('SELECT
+				('SELECT COUNT(comments.id) AS nbComments,
         recipes.id AS recipeId, recipes.author_id,  recipes.img_name, recipes.cat_id, recipes.dif_id,
         recipes.cooking_time, recipes.persons, recipes.recipe_title, recipes.recipe_content,
         users.nickname, categories.id AS categoryId, categories.cat_label, difficulty.id AS difficultyId, difficulty.dif_label, users.id AS userId,
         DATE_FORMAT(recipe_date, \'%d/%m/%Y à %Hh%i\')
         AS recipe_date
         FROM recipes
+        LEFT JOIN comments ON recipes.id = comments.recipe_id
         INNER JOIN users ON recipes.author_id = users.id
         INNER JOIN categories ON recipes.cat_id = categories.id
         INNER JOIN difficulty ON recipes.dif_id = difficulty.id
-        WHERE recipes.cat_id = ?');
+        WHERE recipes.cat_id = ? GROUP BY recipes.id');
 			$q->execute(array($categoryId));
 			$listRecipesObj = [];
 			while ($recipe = $q->fetch()) {
@@ -217,6 +201,7 @@ class RecipesManager extends Manager {
 					'recipeDate' => $recipe['recipe_date'],
 					'recipeTitle' => $recipe['recipe_title'],
 					'recipeContent' => $recipe['recipe_content'],
+                    'nbComments' => $recipe['nbComments']
 				];
 				$listRecipesObj[] = new Recipe($dataRecipe);
 			}
@@ -227,6 +212,12 @@ class RecipesManager extends Manager {
 		}
 	}
 
+    /**
+     * Delete a recipe (admin)
+     *
+     * @param int $recipeId
+     * @throws \Exception
+     */
 	public function deleteRecipe($recipeId) {
 		try {
 			$db = $this->dbConnect();
@@ -237,17 +228,43 @@ class RecipesManager extends Manager {
 		}
 	}
 
+    /**
+     * Create a recipe (admin)
+     *
+     * @param string $title
+     * @param int $categoryId
+     * @param string $content
+     * @param int $cookingTime
+     * @param string $image
+     * @param int $persons
+     * @param int $difficultyId
+     * @throws \Exception
+     */
 	public function createRecipe($title, $categoryId, $content, $cookingTime, $image, $persons, $difficultyId) {
 		try {
 			$db = $this->dbConnect();
 			$q = $db->prepare('
             INSERT INTO recipes(recipe_title, cat_id, recipe_content, cooking_time, img_name, persons, dif_id, author_id, recipe_date)
-            VALUES(?, ?, ?, ?, ?, ?, ?, 8, NOW())');
+            VALUES(?, ?, ?, ?, ?, ?, ?, 1, NOW())');
 			$q->execute(array($title, $categoryId, $content, $cookingTime, $image, $persons, $difficultyId));
 		} catch (\PDOException $pdoE) {
 			throw new \Exception($pdoE->getMessage());
 		}
 	}
+
+    /**
+     * Update a recipe
+     *
+     * @param string $title
+     * @param int $categoryId
+     * @param string $content
+     * @param int $cookingTime
+     * @param string $image
+     * @param int $persons
+     * @param int $difficultyId
+     * @param $recipeId
+     * @throws \Exception
+     */
 	public function updateRecipe($title, $categoryId, $content, $cookingTime, $image, $persons, $difficultyId, $recipeId) {
 		try {
 			$db = $this->dbConnect();
@@ -259,21 +276,31 @@ class RecipesManager extends Manager {
 		}
 	}
 
+    /**
+     * Get the recipes by title or category (search bar)
+     *
+     * @param string $keyword
+     * Create an object for each recipe and put inside the array $listRecipesObj
+     * @return array object $listRecipesObj
+     * @throws \Exception
+     */
 	public function getRecipesByTitleOrCategory($keyword) {
 		try {
 			$db = $this->dbConnect();
 			$q = $db->prepare('
-            SELECT
+            SELECT COUNT(comments.id) AS nbComments,
             recipes.id AS recipeId, recipes.author_id, recipes.img_name, recipes.cat_id, recipes.dif_id,
             recipes.cooking_time, recipes.persons, recipes.recipe_title, recipes.recipe_content,
             users.nickname, categories.id AS categoryId, categories.cat_label, difficulty.id AS difficultyId, difficulty.dif_label, users.id AS userId,
             DATE_FORMAT(recipe_date, \'%d/%m/%Y à %Hh%i\')
             AS recipe_date
             FROM recipes
+            LEFT JOIN comments ON recipes.id = comments.recipe_id
             INNER JOIN users ON recipes.author_id = users.id
             INNER JOIN categories ON recipes.cat_id = categories.id
             INNER JOIN difficulty ON recipes.dif_id = difficulty.id
             WHERE recipe_title LIKE :keyword OR categories.cat_label LIKE :keyword
+            GROUP BY recipes.id
             ORDER BY recipe_date DESC
             ');
 			$q->execute(array(':keyword' => '%' . $keyword . '%'));
@@ -294,6 +321,7 @@ class RecipesManager extends Manager {
 					'recipeDate' => $recipe['recipe_date'],
 					'recipeTitle' => $recipe['recipe_title'],
 					'recipeContent' => $recipe['recipe_content'],
+                    'nbComments' => $recipe['nbComments']
 				];
 
 				$listRecipesObj[] = new Recipe($dataRecipe);
@@ -305,6 +333,12 @@ class RecipesManager extends Manager {
 		}
 	}
 
+    /**
+     * Count the number of recipes in the db
+     *
+     * @return int $nbLines
+     * @throws \Exception
+     */
 	public function countRecipes() {
 		try {
 			$db = $this->dbconnect();

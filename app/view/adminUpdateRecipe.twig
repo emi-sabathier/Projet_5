@@ -1,43 +1,45 @@
 {% extends "template.twig" %}
 {% block body %}
-    <h3>Modifier une recette</h3>
+    <h2 class="text-center">Modifier une recette</h2>
     <div>
-        <form action="{{ baseUrl }}/admin/updateform/{{ recipe.recipeId }}" method="post" class="form-group" enctype="multipart/form-data">
+        <form action="{{ baseUrl }}/admin/updateform/{{ recipe.recipeId }}" method="post"
+              class="form-group col-sm-8 col-md-8 col-lg-8" enctype="multipart/form-data">
             <label for="title"><strong>Titre de la recette :</strong></label><br/>
-            <input type="text" id="title" name="title" value="{{ recipe.recipeTitle }}" class="form-control form-control-md"><br/>
-            <img src="{{ baseUrl }}/app/public/images/resized/{{ recipe.image }}" alt="image de la recette">
+            <input type="text" id="title" name="title" value="{{ recipe.recipeTitle }}"
+                   class="form-control form-control-lg"><br/>
+            <img src="{{ baseUrl }}/app/public/images/resized/{{ recipe.image }}" class="w-25" alt="image de la recette">
             <div class="form-group">
                 <label for="file-upload" required><strong>Uploader une image (Resizée en 640x480)</strong></label>
                 <input type="file" name="image" class="form-control-file" id="file-upload">
                 {% if errors.fileSize %}
-                    <p>Le fichier ne doit pas dépasser 5mo</p>
+                    <p class="alert alert-danger">Le fichier ne doit pas dépasser 5mo</p>
                 {% endif %}
                 {% if errors.wrongType %}
-                    <p>Mauvaise extension. Choisissez un JPG, GIF, ou PNG</p>
+                    <p class="alert alert-danger">Mauvaise extension. Choisissez un JPG</p>
                 {% endif %}
             </div>
-            <select name="difficulty-id" class="create-difficulty form-control my-2 w-25" required>
+            <select name="difficulty-id" class="create-difficulty form-control form-control-lg my-2 w-25" required>
                 <option value="">-> Difficulté</option>
                 <option value="1" {% if recipe.difficultyId == 1 %} selected="selected"{% endif %}>Facile</option>
                 <option value="2" {% if recipe.difficultyId == 2 %} selected="selected"{% endif %}>Moyen</option>
                 <option value="3" {% if recipe.difficultyId == 3 %} selected="selected"{% endif %}>Difficile</option>
             </select>
-            <select name="category-id" class="create-categories form-control my-2 w-25" required>
+            <select name="category-id" class="create-categories form-control form-control-lg my-2 w-25" required>
                 <option value="">-> Catégories</option>
                 <option value="1" {% if recipe.categoryId == 1 %} selected="selected"{% endif %}>Entrée</option>
-                <option value="2" {% if recipe.categoryId == 2 %} selected="selected"{% endif %}>Plat</option>
-                <option value="3" {% if recipe.categoryId == 3 %} selected="selected"{% endif %}>Amuse-bouche</option>
+                <option value="2" {% if recipe.categoryId == 2 %} selected="selected"{% endif %}>Amuse-bouche</option>
+                <option value="3" {% if recipe.categoryId == 3 %} selected="selected"{% endif %}>Plat</option>
                 <option value="4" {% if recipe.categoryId == 4 %} selected="selected"{% endif %}>Accompagnement</option>
                 <option value="5" {% if recipe.categoryId == 5 %} selected="selected"{% endif %}>Dessert</option>
             </select>
-            <select name="persons" class="create-persons form-control my-2 w-25" required>
+            <select name="persons" class="create-persons form-control form-control-lg my-2 w-25" required>
                 <option value="">-> Nombre de pers.</option>
                 <option value="1" {% if recipe.persons == 1 %} selected="selected"{% endif %}>1</option>
                 <option value="2" {% if recipe.persons == 2 %} selected="selected"{% endif %}>2</option>
                 <option value="3" {% if recipe.persons == 3 %} selected="selected"{% endif %}>3</option>
                 <option value="4" {% if recipe.persons == 4 %} selected="selected"{% endif %}>4</option>
             </select>
-            <select name="cooking-time" class="create-time form-control my-2 w-25" required>
+            <select name="cooking-time" class="create-time form-control form-control-lg my-2 w-25" required>
                 <option value="">-> Temps (mn)</option>
                 <option value="5" {% if recipe.cookingTime == 5 %} selected="selected"{% endif %}>5</option>
                 <option value="10" {% if recipe.cookingTime == 10 %} selected="selected"{% endif %}>10</option>
@@ -47,11 +49,13 @@
                 <option value="30" {% if recipe.cookingTime == 30 %} selected="selected"{% endif %}>30</option>
             </select>
             <label for="content"><strong>Contenu : </strong></label><br/>
-            <textarea id="post-area" name="content" class="form-control form-control-md">{{ recipe.recipeContent }}</textarea>
-            <input type="submit" value="Envoyer" class="btn btn-primary p-1 my-2"/>
-
+            <textarea id="post-area" name="content"
+                      class="form-control form-control-lg">{{ recipe.recipeContent }}</textarea>
+            <div class="row justify-content-center">
+                <input type="submit" value="Envoyer" class="btn btn-primary p-1 my-2"/>
+            </div>
         </form>
-        <p><a href="{{ baseUrl }}/admin" class="btn btn-secondary p-1">Retour</a></p>
+        <p><a href="{{ baseUrl }}/admin" class="btn btn-secondary p-1"><i class="fas fa-arrow-circle-left"></i> Retour</a></p>
     </div>
 {% endblock %}
 {% block scripts %}

@@ -4,7 +4,18 @@ class AdminPanel{
         this.displayLastRecipesAdmin();
         $('.reset-report').on('click', this.resetReport.bind(this));
         $('.delete-comment').on('click', this.deleteComment.bind(this));
+        $('.delete-user').on('click', this.deleteUser.bind(this));
         $('.page-link').on('click', this.displayRecipesByPageAdmin.bind(this));
+    }
+    deleteUser(e){
+        let idUser = $(e.target).attr('data-id');
+        $.post(this.baseUrl + '/admin/deleteuser', {userId: idUser}, (response) => {
+            if(response === 'success'){
+                $(e.target).parent().parent().remove();
+            } else {
+                console.log('Une erreur est survenue');
+            }
+        }, 'JSON');
     }
     displayLastRecipesAdmin(){
         $.get(this.baseUrl + '/admin/displayLastRecipesAdmin', (response) => {
@@ -33,6 +44,12 @@ class AdminPanel{
         }, 'JSON');
     }
     createRecipeInline(recipe){
+        let linkInfo = {
+            'class' : 'nbComments'
+        }
+
+        if (recipe.nbComments > 0) linkInfo.href = this.baseUrl + '/admin/listcomments/' + recipe.id;
+
         $('#admin-list-recipes').append(
             $('<tr>', {'class' : 'recipes'}).append(
                 $('<td>').append(
@@ -45,12 +62,10 @@ class AdminPanel{
                 $('<td>').append(
                     $('<a>', {
                         'href': this.baseUrl + '/admin/category/' + recipe.categoryId
-                    }).text(recipe.category)
+                    }).text(recipe.categoryLabel)
                 ),
                 $('<td>').append(
-                    $('<a>', {
-                        'href': this.baseUrl + '/admin/listcomments/' + recipe.id
-                    }).text(recipe.nbComments)
+                    $('<a>', linkInfo).text(recipe.nbComments)
                 ),
                 $('<td>', {
                     'class' : 'btn-group',

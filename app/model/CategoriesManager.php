@@ -4,6 +4,13 @@ namespace app\model;
 
 class CategoriesManager extends Manager
 {
+    /**
+     * Get the categories list
+     * 
+     * Create an object for each category and put in array $listCategoriesObj
+     * @return array $listCategoriesObj
+     * @throws \Exception
+     */
     public function getCategories()
     {
         try {

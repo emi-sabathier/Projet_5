@@ -1,44 +1,58 @@
 {% extends "template.twig" %}
 {% block body %}
-    <h4 xmlns="http://www.w3.org/1999/html">Recette : {{ recipe.recipeTitle }}</h4>
-    <div>
-        <img src="{{ baseUrl }}/app/public/images/{{ recipe.image }}" alt="image de la recette">
+    <div class="row">
+        <h2 class="col-sm-12 col-md-12 col-lg-12 text-center">Recette : {{ recipe.recipeTitle }}</h2>
     </div>
-    <div>
-        <p>De <strong>{{ recipe.nickname }}</strong> à {{ recipe.recipeDate }}</p>
-        <p>Catégorie: {{ recipe.categoryLabel }}</p>
-        <p>Temps: {{ recipe.cookingTime }}mn</p>
-        <p>Personnes: {{ recipe.persons }}</p>
-        <p>Difficulté: {{ recipe.difficultyLabel }}</p>
-        <p>{{ recipe.recipeContent|raw }}</p>
-        {% if session.id %}
-            <div id="comment-form">
-                <label for="comment">Commentaire</label><br/>
-                <textarea id="comment" name="comment" cols="50" rows="5" required
-                          class="form-control form-control-sm"></textarea>
-                <button type="submit" data-id="{{ recipe.recipeId }}"
-                        class="post-comment btn btn-primary mt-3 mb-0 p-1">Envoyer
-                </button>
-            </div>
-        {% else %}
-            <p><strong>Vous devez être logué pour pouvoir poster un commentaire</strong></p>
-        {% endif %}
-        <section id="comments">
-            {% for comment in comments %}
-                <div data-id="comment-{{ comment.commentId }}">
-                    <strong>{{ comment.nickname }}</strong>
-                    <span>Le {{ comment.date }}</span>
-                    {% if session.id %}
-                        <button data-id="{{ comment.commentId }}" class="report-comment btn btn-danger p-1">Signaler
+    <div class="row justify-content-center mx-auto w-75 align-items-center">
+        <div class="recipe-card col-sm-6 col-md-6 col-lg-6">
+            <figure class="text-center">
+                <img src="{{ baseUrl }}/app/public/images/resized/{{ recipe.image }}" alt="image de la recette">
+            </figure>
+        </div>
+        <div class="recipe-infos col-sm-6 col-md-6 col-lg-6text-left">
+            <ul class="text-center">
+                <li>De <strong>{{ recipe.nickname }}</strong> à {{ recipe.recipeDate }}</li>
+                <li><i class="fas fa-clock"></i> Temps : <strong>{{ recipe.cookingTime }}mn</strong></li>
+                <li><i class="fas fa-user-friends"></i> Personnes : <strong>{{ recipe.persons }}</strong></li>
+                <li><i class="fas fa-signal"></i> Niveau : <strong>{{ recipe.difficultyLabel }}</strong></li>
+                <li><a href="{{ baseUrl }}/category/id/{{ recipe.categoryId }}"  class="badge badge-success">{{ recipe.categoryLabel }}</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="row recipe-desc">
+        {{ recipe.recipeContent|raw }}
+        <div class="comments-area mx-auto w-75">
+            {% if session.id %}
+                <div id="comment-form">
+                    <h5 class="text-center">Commentaires</h5>
+                    <textarea id="comment" name="comment" cols="50" rows="5" required
+                              class="form-control form-control-sm"></textarea>
+                    <div class="row justify-content-center">
+                        <button type="submit" data-id="{{ recipe.recipeId }}"
+                                class="post-comment btn btn-primary mt-3 mb-0 p-1">Envoyer
                         </button>
-                    {% endif %}
-                    <p>
-                        {{ comment.content }}
-                    </p>
+                    </div>
                 </div>
-            {% endfor %}
-        </section>
-        <a href="{{ baseUrl }}" class="btn btn-secondary p-1 text-center">Retour</a></p>
+            {% else %}
+                <p><strong>Vous devez être logué pour pouvoir poster un commentaire</strong></p>
+            {% endif %}
+            <section id="comments">
+                {% for comment in comments %}
+                    <div data-id="comment-{{ comment.commentId }}">
+                        <strong>{{ comment.nickname }}</strong>
+                        <span>Le {{ comment.date }}</span>
+                        {% if session.id %}
+                            <button data-id="{{ comment.commentId }}" class="report-comment btn btn-danger p-1">Signaler
+                            </button>
+                        {% endif %}
+                        <p>
+                            {{ comment.content }}
+                        </p>
+                    </div>
+                {% endfor %}
+            </section>
+            <a href="{{ baseUrl }}" class="btn btn-secondary p-1 text-center"><i class="fas fa-arrow-circle-left"></i> Retour</a></p>
+        </div>
     </div>
 {% endblock %}
 {% block scripts %}

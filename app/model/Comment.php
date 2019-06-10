@@ -28,16 +28,7 @@ class Comment implements \JsonSerializable
         }
     }
 
-    // Méthode appelée quand on fait un json encode
-
-    /**
-     * Specify data which should be serialized to JSON
-     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
-     * @return mixed data which can be serialized by <b>json_encode</b>,
-     * which is a value of any type other than a resource.
-     * @since 5.4.0
-     */
-
+    //Returns data which can be used by json_encode()
     public function jsonSerialize()
     {
         return [
@@ -49,129 +40,129 @@ class Comment implements \JsonSerializable
     }
 
     /**
-     * @return mixed
+     * @return int
      */
-    public function getCommentId()
+    public function getCommentId() : int
     {
         return $this->_commentId;
     }
 
     /**
-     * @param mixed $id
+     * @param int $id
      */
-    public function setCommentId($id)
+    public function setCommentId(int $id)
     {
         $this->_commentId = $id;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getNickname()
+    public function getNickname() :string
     {
         return $this->_nickname;
     }
 
     /**
-     * @param mixed $_nickname
+     * @param string $_nickname
      */
-    public function setNickname($_nickname)
+    public function setNickname(string $_nickname)
     {
         $this->_nickname = $_nickname;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getDate()
+    public function getDate() :string
     {
         return $this->_date;
     }
 
     /**
-     * @param mixed $_date
+     * @param string $_date
      */
-    public function setDate($_date)
+    public function setDate(string $_date)
     {
         $this->_date = $_date;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getContent()
+    public function getContent() :string
     {
         return $this->_content;
     }
 
     /**
-     * @param mixed $_content
+     * @param string $_content
      */
-    public function setContent($_content)
+    public function setContent(string $_content)
     {
         $this->_content = $_content;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getRecipeTitle()
+    public function getRecipeTitle() :string
     {
         return $this->_recipe_title;
     }
 
     /**
-     * @param mixed $recipe_title
+     * @param string $recipe_title
      */
-    public function setRecipeTitle($recipe_title)
+    public function setRecipeTitle(string $recipe_title)
     {
         $this->_recipe_title = $recipe_title;
     }
 
     /**
-     * @return mixed
+     * @return int
      */
-    public function getRecipeId()
+    public function getRecipeId() :int
     {
         return $this->_recipe_id;
     }
 
     /**
-     * @param mixed $recipe_id
+     * @param int $recipe_id
      */
-    public function setRecipeId($recipe_id)
+    public function setRecipeId(int $recipe_id)
     {
         $this->_recipe_id = $recipe_id;
     }
 
     /**
-     * @return mixed
+     * @return int
      */
-    public function getUserId()
+    public function getUserId() :sint
     {
         return $this->_user_id;
     }
 
     /**
-     * @param mixed $user_id
+     * @param int $user_id
      */
-    public function setUserId($user_id)
+    public function setUserId(int $user_id)
     {
         $this->_user_id = $user_id;
     }
 
     /**
-     * @return mixed
+     * @return int
      */
-    public function getReport()
+    public function getReport() :int
     {
         return $this->_report;
     }
 
     /**
-     * @param mixed $_report
+     * @param int $_report
      */
-    public function setReport($_report)
+    public function setReport(int $_report)
     {
         $this->_report = $_report;
     }

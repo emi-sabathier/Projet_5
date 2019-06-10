@@ -1,37 +1,44 @@
 {% extends "template.twig" %}
 {% block body %}
-
     <div class="row">
+        <h1 class="col-sm-12 col-md-12 col-lg-12 text-center"><span class="font-weight-normal">Des recettes</span>
+            simples et rapides !</h1>
+        <h5 class="col-sm-12 col-md-12 col-lg-12 text-center">Pressés ? Simplifiez-vous le quotidien <i
+                    class="em em-relieved"></i><i class="em em-fork_and_knife"></i></h5>
 
-        <div class="input-group my-3 search-bar">
-            <input type="search" name="keyword" id="keyword" class="form-control" placeholder="Recherche">
-            <div class="input-group-append">
-                <button class="btn btn-secondary" type="button">
-                    <i class="fa fa-search"></i>
-                </button>
+    </div>
+    <div class="row search-bar-pos">
+        <div class="search-bar-bg my-3"></div>
+        <div class="input-group search-bar input-group-lg w-75 mx-auto">
+            <input type="search" name="keyword" id="keyword" class="form-control"
+                   placeholder="Tapez votre mot clef ou la catégorie">
+        </div>
+    </div>
+    <h6 class="no-recipe-msg text-center"></h6>
+    <div class="card-group" id="list-recipes">
+    </div>
+    <div class="row">
+        <div class="w-100">
+            <div class="row">
+                <h3 class="col-sm-12 col-md-12 col-lg-12 text-center my-3"><span class="font-weight-normal">Liste des catégories</h3>
             </div>
         </div>
-        <div class="display-results">
-            <div class="result"></div>
-        </div>
-        <div class="card-deck" id="list-recipes">
-        </div>
-
     </div>
     <div class="row">
-        <div class="mx-auto">
+        <ul class="w-100 card-group text-center p-0 my-3 justify-content-center list-categories">
             {% for category in listCategories %}
-                <a href="{{ baseUrl }}/category/id/{{ category.categoryId }}"
-                   class="btn btn-success">{{ category.categoryLabel }}</a>
+                <li class="col mb-2"><a href="{{ baseUrl }}/category/id/{{ category.categoryId }}"
+                                                                  class="btn btn-success category-uppercase">{{ category.categoryLabel }}</a></li>
             {% endfor %}
-        </div>
+        </ul>
     </div>
     <div class="row">
-        <div class="mx-auto  my-5">
+        <div class="mx-auto my-5">
             <nav>
-                <ul class="pagination">
+                <ul class="pagination pagination-lg">
                     {% for page in 1..pagesInfos.nbPages %}
-                         <li class="page-item"><a class="page-link" data-id="{{ page }}" href="#">{{ page }}</a></li>
+                        <li class="page-item"><a class="page-link" data-id="{{ page }}" href="#/">{{ page }}</a>
+                        </li>
                     {% endfor %}
                 </ul>
             </nav>

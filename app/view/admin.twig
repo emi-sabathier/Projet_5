@@ -1,10 +1,14 @@
 {% extends "template.twig" %}
 {% block body %}
-    <h2>Panneau d'administration</h2>
-    <a href="{{ baseUrl }}/admin/recipeform" class="btn btn-primary p-1">Créer une recette</a>
-    <h4>Commentaires signalés</h4>
+    <div class="row justify-content-center">
+        <h2 class="text-center w-100">Panneau d'administration</h2>
+    </div>
+    <div class="row justify-content-center">
+        <a href="{{ baseUrl }}/admin/recipeform" class="btn btn-primary p-1 m-3 text-center ">Créer une recette</a>
+    </div>
+    <h5 class="text-center my-3">Commentaires signalés</h5>
     {% if listReportedComments is empty %}
-        <p>Il n'y a aucun commentaire signalé</p>
+        <p class="text-center">Il n'y a aucun commentaire signalé</p>
     {% else %}
         <table class="text-center table-striped table-borderless table-responsive table w-100 d-block d-sm-table d-md-table">
             <thead class="thead-dark">
@@ -34,7 +38,7 @@
             {% endfor %}
         </table>
     {% endif %}
-    <h4>Liste des recettes</h4>
+    <h5 class="text-center my-3">Liste des recettes</h5>
     <table class="text-center table-striped table-borderless table-responsive table w-100 d-block d-sm-table d-md-table">
         <thead class="thead-dark">
         <tr>
@@ -51,15 +55,37 @@
     <div class="row">
         <div class="mx-auto  my-5">
             <nav>
-                <ul class="pagination">
+                <ul class="pagination pagination-lg">
                     {% for page in 1..pagesInfos.nbPages %}
-                        <li class="page-item"><a class="page-link" data-id="{{ page }}" href="#">{{ page }}</a></li>
+                        <li class="page-item"><a class="page-link" data-id="{{ page }}" href="#/">{{ page }}</a></li>
                     {% endfor %}
                 </ul>
             </nav>
         </div>
     </div>
-    <a href="{{ baseUrl }}" class="btn btn-secondary p-1 text-center">Retour</a></p>
+    <h5 class="text-center my-3">Effacer un utilisateur</h5>
+    <table class="text-center table-striped table-borderless table-responsive table w-100 d-block d-sm-table d-md-table">
+        <thead class="thead-dark">
+        <tr>
+            <th>Id</th>
+            <th>Nom</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        {% for user in listUsers %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.nickname }}</td>
+                <td class="btn-group" role="group" aria-label="actions">
+                    <button data-id="{{ user.id }}" class="delete-user btn btn-danger p-1">
+                        Effacer
+                    </button>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <p><a href="{{ baseUrl }}" class="btn btn-secondary p-1 text-center"><i class="fas fa-arrow-circle-left"></i>
+            Retour</a></p>
 {% endblock %}
 {% block scripts %}
     <script src="{{ baseUrl }}/app/public/js/AdminPanel.js"></script>

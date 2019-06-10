@@ -1,49 +1,82 @@
 <!doctype html>
-<html lang="fr">
+<html lang="fr" class="h-100">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Les petites recettes d'Emilie">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Les petites recettes d'Emilie">
+    <meta property="og:title" content="Les petites recettes d'Emilie">
+    <meta property="og:url" content="http://recipes.emisabathier.com">
+    <meta property="og:description" content="Les petites recettes d'Emilie">
+    <meta property="og:image" content="{{ baseUrl }}/app/public/images/banner.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@recipemilie">
+    <meta name="twitter:title" content="Les petites recettes d'Emilie">
+    <meta name="twitter:description" content="Les petites recettes d'Emilie">
+    <meta name="theme-color" content="#88BA35">
     <title>
-        {% block title %}Cuisine rapide{% endblock %}
+        {% block title %}EmiRecettes - Le site de cuisine rapide{% endblock %}
     </title>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
-          integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <link rel="icon" href="{{ baseUrl }}/app/public/images/favicon.ico" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ baseUrl }}/app/public/css/styles.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,700,700i,800,800i,900,900i&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
+    <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css"/>
     <script src="https://cloud.tinymce.com/5/tinymce.min.js?apiKey=un6psb60cfyj1tbk6h05mqrroi6vz31e7vrb5wpefkx4o9uy">
     </script>
 </head>
 
-<body>
-<div class="container">
-    <div class="navbar navbar-dark bg-dark">
-        <div class="row mx-auto">
-            <h2 class="text-white">Emi recettes</h2>
-
-            {% if session is defined %}
-                {% if session.role == 1 %}
-                    <a href="{{ baseUrl }}/admin" class="text-white btn btn-secondary"><i class="fas fa-user-lock"></i></a>
-                    <a href="{{ baseUrl }}/disconnect" class="text-white btn btn-danger"><i
-                                class="fas fa-sign-out-alt"></i></a>
-                {% elseif session.role == 0 %}
-                    <a href="{{ baseUrl }}/disconnect" class="text-white btn btn-danger"><i
-                                class="fas fa-sign-out-alt"></i></a>
+<body class="d-flex flex-column h-100">
+<div class="container-fluid">
+    <div class="row mx-auto">
+        <div class="navbar row w-100">
+            <div class="logo mx-auto text-white">
+                <a href="{{ baseUrl }}">
+                    <span class="part-one">Emi</span>
+                    <img src="{{ baseUrl }}/app/public/images/logo_chicken.svg" alt="logo chicken" class="logo-image">
+                    <span class="part-two">Recettes</span>
+                </a>
+            </div>
+            <div class="connect-area justify-content-center align-items-center btn-secondary d-flex text-right">
+                {% if session is defined %}
+                    {% if session.role == 1 %}
+                        <a href="{{ baseUrl }}/admin" class="text-white"><i class="fas fa-user-lock"></i></a>
+                        <a href="{{ baseUrl }}/disconnect" class="text-white"><i
+                                    class="fas fa-sign-out-alt"></i></a>
+                    {% elseif session.role == 0 %}
+                        <a href="{{ baseUrl }}/disconnect" class="text-white p-disconnect"><i
+                                    class="fas fa-sign-out-alt"></i></a>
+                    {% endif %}
+                {% else %}
+                    <a href="{{ baseUrl }}/authform" class="text-white connect"><i class="fas fa-user"></i></a>
+                    <a href="{{ baseUrl }}/authform" class="text-white connect"><span>Connexion</span></a>
                 {% endif %}
-            {% else %}
-                <a href="{{ baseUrl }}/authform" class="text-white btn btn-success"><i class="fas fa-user"></i></a>
-            {% endif %}
+            </div>
         </div>
     </div>
     {% block body %}
     {% endblock %}
 </div>
+<footer class="row mt-auto w-100">
+    <ul class="w-100">
+        <li><a href="mailto:sabathier.emilie@gmail.com">Me contacter</a></li>
+        <li><a href="#/">©E.Sabathier 2019</a></li>
+    </ul>
+</footer>
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-{% block scripts %}{% endblock %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
 </script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
 </script>
+{% block scripts %}{% endblock %}
 </body>
 </html>

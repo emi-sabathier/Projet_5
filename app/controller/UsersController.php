@@ -8,15 +8,24 @@ use app\model\CommentsManager;
 
 class UsersController extends AppController
 {
+    /**
+     * Admin panel
+     *
+     * Verifications on $_SESSION['user']
+     * Display admin view + $listReportedComments object + pagesInfos object
+     */
     public function adminPanel(){
         if(isset($_SESSION['user'])) {
             if($_SESSION['user']->getRole() == 1){
                 $commentsManager = new CommentsManager();
+                $usersManager = new UsersManager();
                 $listReportedComments = $commentsManager->getReportedComments();
+                $listUsers = $usersManager->getUsersList();
                 $pagesInfos = $this->getRecipesByPageAdmin();
 
                 echo $this->twig->render('admin.twig', [
                     'listReportedComments' => $listReportedComments,
+                    'listUsers' => $listUsers,
                     'pagesInfos' => $pagesInfos
                 ]);
             } else {
@@ -28,6 +37,14 @@ class UsersController extends AppController
             exit;
         }
     }
+/**
+ * Display recipes of a page (admin pagination) 
+ * 
+ * Set to 6 recipes by page
+ * Verifications on : $_POST['pageNumber']
+ * json_encode : success + $listRecipes object
+ * @return object $pagesInfos
+ */
     public function getRecipesByPageAdmin()
     {
         $recipesManager = new RecipesManager();
@@ -57,6 +74,11 @@ class UsersController extends AppController
         ];
         return $pagesInfos;
     }
+    /**
+     * Display the login form
+     *
+     * @param [boolean] $compactVars : display errors in the login view
+     */
     public function loginForm($compactVars = null)
     {
         if ($compactVars == null) {
@@ -65,7 +87,11 @@ class UsersController extends AppController
             echo $this->twig->render('login.twig', $compactVars);
         }
     }
-
+    /**
+     * Display the register form
+     *
+     * @param [boolean] $compactVars : display errors in the register view
+     */
     public function registerForm($compactVars = null)
     {
         if ($compactVars == null) {
@@ -75,30 +101,33 @@ class UsersController extends AppController
         }
     }
 
+/**
+ * Log the user
+ * 
+ * Verifications on : $_POST['signinEmail], $_POST['signinPwd']
+ * Return $errors in loginForm() with compact('errors') - compactVars
+ */
     public function login()
     {
         if (isset($_POST['signinEmail'], $_POST['signinPwd'])) {
-            $errors = [];
+            $errors = false;
             $usersManager = new UsersManager();
             $user = $usersManager->getUserByEmail($_POST['signinEmail']);
 
-            if (empty($_POST['signinEmail']) || empty($_POST['signinPwd'])) {
-                $errors['emptyField'] = true;
-            }
-            if ($user == false && $user > 0) {
-                $errors['noEmail'] = 'L\'identifiant n\'existe pas';
+            if ($user == false) {
+                $errors = true;
             } else {
                 $pwdCheck = password_verify($_POST['signinPwd'], $user->getPassword());
                 if ($pwdCheck == false) {
-                    $errors['wrongPwd'] = 'Le mot de passe n\'est pas correct';
+                    $errors = true;
                 } else {
                     $_SESSION['user'] = $user;
                     if ($_SESSION['user']->getRole() == 1) {
                         header('Location:' . BASEURL . '/admin');
                         exit;
                     } elseif ($_SESSION['user']->getRole() == 0) {
-                    header('Location:' . BASEURL);
-                    exit;
+                        header('Location:' . BASEURL);
+                        exit;
                     }
                 }
             }
@@ -110,10 +139,15 @@ class UsersController extends AppController
         }
     }
 
+    /**
+     * Create a new user
+     * 
+     * Verifications on $_POST['registerEmail'], $_POST['registerNickname'], $_POST['registerPwd']
+     * Return $errors in the registerForm view with compact('errors') - $compactVars
+     */
     public function newUser()
     {
-        try {
-            // $array = ['sdf', 'sdfgfgh', true] -> if (in_array('empty_field', $errors)) {<p>remplissez les champs</p>}
+        
             if (isset($_POST['registerEmail'], $_POST['registerNickname'], $_POST['registerPwd'])) {
                 $errors = [];
                 $usersManager = new UsersManager();
@@ -126,8 +160,8 @@ class UsersController extends AppController
                 if ($emailExists == true) {
                     $errors['emailExists'] = true;
                 }
-                if (!preg_match('#^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]{2,4}+$#', $_POST['registerEmail'])) {
-                    $errors['regexEmail'] = true;
+                if (filter_var($_POST['registerEmail'], FILTER_VALIDATE_EMAIL) == false) {
+                    $errors['wrongEmailFormat'] = true;
                 }
                 if ($nicknameExists == true) {
                     $errors['nicknameExists'] = true;
@@ -145,24 +179,41 @@ class UsersController extends AppController
                     $errors['shortPwd'] = true;
                 }
                 if (!empty($errors)) {
-                    // Si erreurs, on compacte le tableau pour les afficher dans la view contenue dans registerForm
-                    // Si on ne fait pas ça on perd les erreurs entre les méthodes
                     $this->registerForm(compact('errors'));
                 } else {
                     $hash = password_hash($_POST['registerPwd'], PASSWORD_DEFAULT);
                     $usersManager->createUser($_POST['registerEmail'], $_POST['registerNickname'], $hash);
-                    header('location:' . BASEURL);
+                    header('Location: ' . BASEURL . '/authform');
                     exit;
                 }
             } else {
-                header('Location: ' . BASEURL . '/register');
-                exit;
+               header('Location: ' . BASEURL);
+               exit;
             }
-        } catch (Exception $e) {
-            throw new \Exception($e->getMessage());
-        }
+
     }
 
+    /**
+     * Delete an user and his comments
+     */
+    public function deleteUser() {
+        if (isset($_POST['userId'])) {
+            $userId = (int) $_POST['userId'];
+            if ($userId != 0) {
+                $userManager = new UsersManager();
+                $userManager->deleteUser($userId);
+                $userManager->deleteUserComments($userId);
+                echo json_encode('success');
+            } else {
+                echo json_encode('error');
+            }
+        } else {
+            echo json_encode('error');
+        }
+    }
+/**
+* Disconnect the user
+*/
     public function disconnect()
     {
         session_destroy();

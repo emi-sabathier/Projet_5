@@ -3,11 +3,11 @@
 namespace app\model;
 
 class User {
-    private $id;
-    private $role;
-    private $nickname;
-    private $email;
-    private $password;
+    private $_id;
+    private $_role;
+    private $_nickname;
+    private $_email;
+    private $_password;
 
     public function __construct(array $user) {
         $this->hydrate($user);
@@ -23,85 +23,84 @@ class User {
     }
 
     /**
-     * @return mixed
+     * @return int
      */
-    public function getId()
+    public function getId() :int
     {
-        return $this->id;
+        return $this->_id;
+    }
+
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id)
+    {
+        $this->_id = $id;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getRole() :int
+    {
+        return $this->_role;
     }
 
     /**
-     * @param mixed $id
+     * @param int $role
      */
-    public function setId($id)
+    public function setRole(int $role)
     {
-        $this->id = $id;
+        $this->_role = $role;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getRole()
+    public function getNickname() :string
     {
-        return $this->role;
+        return $this->_nickname;
     }
-
-    /**
-     * @param mixed $role
-     */
-    public function setRole($role)
-    {
-        $this->role = $role;
-    }
-
-	/**
-	 * @return string
-	 */
-	public function getNickname() {
-		return $this->nickname;
-	}
 
     /**
      * @param string $nickname
-     * @return User
      */
-	public function setNickname($nickname) {
-		$this->nickname = $nickname;
+    public function setNickname(string $nickname)
+    {
+        $this->_nickname = $nickname;
+    }
 
-		return $this;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getUserByEmail() {
-		return $this->email;
-	}
+    /**
+     * @return string
+     */
+    public function getEmail() :string
+    {
+        return $this->_email;
+    }
 
     /**
      * @param string $email
-     * @return User
      */
-	public function setEmail($email) {
-		$this->email = $email;
+    public function setEmail(string $email)
+    {
+        $this->_email = $email;
+    }
 
-		return $this;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getPassword() {
-		return $this->password;
-	}
+    /**
+     * @return string
+     */
+    public function getPassword() :string
+    {
+        return $this->_password;
+    }
 
     /**
      * @param string $password
-     * @return User
      */
-	public function setPassword($password) {
-		$this->password = $password;
-
-		return $this;
-	}
+    public function setPassword(string $password)
+    {
+        $this->_password = $password;
+    }
 }

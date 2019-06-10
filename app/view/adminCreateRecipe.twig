@@ -1,27 +1,28 @@
 {% extends "template.twig" %}
 {% block body %}
-    <h3>Créer une recette</h3>
+    <h2 class="text-center">Créer une recette</h2>
     <div>
-        <form action="{{ baseUrl }}/admin/createrecipe" method="post" class="form-group" enctype="multipart/form-data">
+        <form action="{{ baseUrl }}/admin/createrecipe" method="post" class="form-group col-sm-8 col-md-8 col-lg-8"
+              enctype="multipart/form-data">
             <label for="title"><strong>Titre de la recette :</strong></label><br/>
-            <input type="text" id="title" name="title" class="form-control form-control-md"><br/>
+            <input type="text" id="title" name="title" class="form-control form-control-lg"><br/>
             <div class="form-group">
                 <label for="file-upload" required><strong>Uploader une image (Resizée en 640x480)</strong></label>
                 <input type="file" name="image" class="form-control-file" id="file-upload">
                 {% if errors.fileSize %}
-                    <p>Le fichier ne doit pas dépasser 5mo</p>
+                    <p class="alert alert-danger">Le fichier ne doit pas dépasser 5mo</p>
                 {% endif %}
                 {% if errors.wrongType %}
-                    <p>Mauvaise extension. Choisissez un JPG, GIF, ou PNG</p>
+                    <p class="alert alert-danger">Mauvaise extension. Choisissez un JPG, GIF, ou PNG</p>
                 {% endif %}
             </div>
-            <select name="difficulty-id" class="create-difficulty form-control my-2 w-25" required>
+            <select name="difficulty-id" class="create-difficulty form-control form-control-lg my-2 w-25" required>
                 <option value="">-> Difficulté</option>
                 <option value="1">Facile</option>
                 <option value="2">Moyen</option>
                 <option value="3">Difficile</option>
             </select>
-            <select name="category-id" class="create-categories form-control my-2 w-25" required>
+            <select name="category-id" class="create-categories form-control form-control-lg my-2 w-25" required>
                 <option value="">-> Catégories</option>
                 <option value="1">Entrée</option>
                 <option value="2">Amuse-bouche</option>
@@ -29,14 +30,14 @@
                 <option value="4">Accompagnement</option>
                 <option value="5">Dessert</option>
             </select>
-            <select name="persons" class="create-persons form-control my-2 w-25" required>
+            <select name="persons" class="create-persons form-control form-control-lg my-2 w-25" required>
                 <option value="">-> Nombre de pers.</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
                 <option value="4">4</option>
             </select>
-            <select name="cooking-time" class="create-time form-control my-2 w-25" required>
+            <select name="cooking-time" class="create-time form-control form-control-lg my-2 w-25" required>
                 <option value="">-> Temps (mn)</option>
                 <option value="5">5</option>
                 <option value="10">10</option>
@@ -46,10 +47,12 @@
                 <option value="30">30</option>
             </select>
             <label for="content"><strong>Contenu : </strong></label><br/>
-            <textarea id="post-area" name="content" class="form-control form-control-md"></textarea>
-            <input type="submit" value="Envoyer" class="btn btn-primary p-1 my-2"/>
+            <textarea id="post-area" name="content" class="form-control form-control-lg"></textarea>
+            <div class="row justify-content-center">
+                <input type="submit" value="Envoyer" class="btn btn-primary p-1 my-2"/>
+            </div>
         </form>
-        <p><a href="{{ baseUrl }}/admin" class="btn btn-secondary p-1">Retour</a></p>
+        <p><a href="{{ baseUrl }}/admin" class="btn btn-secondary p-1"><i class="fas fa-arrow-circle-left"></i> Retour</a></p>
     </div>
 {% endblock %}
 {% block scripts %}

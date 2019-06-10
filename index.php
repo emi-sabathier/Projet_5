@@ -9,12 +9,11 @@ use app\controller\RecipesController;
 use app\controller\UsersController;
 
 $router = new \Bramus\Router\Router();
-define('BASEURL', 'http://localhost:8080/Projets/Projet_5');
+define('BASEURL', 'http://localhost:8080');
 session_start();
-
 $router->get('/', function () {
 	$homeController = new HomeController();
-	$homeController->displayHome(); // view home twig
+	$homeController->displayHome();
 });
 $router->post('/page', function () {
 	$recipesController = new RecipesController();
@@ -66,7 +65,7 @@ $router->get('/disconnect', function () {
 	$usersController = new UsersController();
 	$usersController->disconnect();
 });
-// ADMIN
+
 $router->mount('/admin', function () use ($router) {
 	$router->get('/', function () {
 		$usersController = new UsersController();
@@ -112,6 +111,10 @@ $router->mount('/admin', function () use ($router) {
 		$commentsController = new CommentsController();
 		$commentsController->resetReportedComment();
 	});
+    $router->post('/deleteuser', function () {
+        $usersController = new UsersController();
+        $usersController->deleteUser();
+    });
 });
 $router->set404(function () {
 	header('HTTP/1.1 404 Not Found');

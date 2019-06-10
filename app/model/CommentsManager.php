@@ -3,6 +3,14 @@
 namespace app\model;
 
 class CommentsManager extends Manager {
+	/**
+     * Get a recipe comments
+     * 
+     * Create an object for each comment and put inside the array $listCommentsObj
+	 * @param int $recipeId
+     * @return array $listCommentsObj
+     * @throws \Exception
+     */
 	public function getComments($recipeId) {
 		try {
 			$db = $this->dbconnect();
@@ -15,7 +23,7 @@ class CommentsManager extends Manager {
             INNER JOIN users ON comments.user_id = users.id WHERE recipe_id = ?
             ORDER BY cmt_date DESC');
 			$q->execute(array($recipeId));
-			$listComments = [];
+			$listCommentsObj = [];
 			// récupère chaque commentaire, et les stocke dans l'objet
 			while ($comment = $q->fetch()) {
 				$dataComments = [
@@ -24,14 +32,21 @@ class CommentsManager extends Manager {
 					'date' => $comment['cmt_date'],
 					'content' => $comment['cmt_content'],
 				];
-				$listComments[] = new Comment($dataComments);
+				$listCommentsObj[] = new Comment($dataComments);
 			}
-			return $listComments;
+			return $listCommentsObj;
 		} catch (\PDOException $pdoE) {
 			throw new \Exception($pdoE->getMessage());
 		}
 	}
-
+	/**
+     * Get a comment
+	 * 
+	 * Create an object for each comment and put inside the array $listCommentsObj
+     * @param int $commentId
+     * @return array $listCommentsObj
+     * @throws \Exception
+     */
 	public function getComment($commentId) {
 		try {
 			$db = $this->dbconnect();
@@ -58,19 +73,34 @@ class CommentsManager extends Manager {
 		}
 	}
 
+    /**
+     * Add a comment
+     *
+     * @param int $recipeId
+     * @param int $authorId
+     * @param string $comment
+     * @return int $lastCommentId
+     * @throws \Exception
+     */
 	public function addComment($recipeId, $authorId, $comment) {
 		try {
 			$db = $this->dbconnect();
 			$q = $db->prepare('INSERT INTO comments (recipe_id, user_id, cmt_content, cmt_date) VALUES (?, ?, ?, NOW())');
 			$q->execute(array($recipeId, $authorId, $comment));
-			$lastCommentId = $db->lastInsertId();
-			return $lastCommentId;
+            $lastCommentId = $db->lastInsertId();
+            return $lastCommentId;
 
 		} catch (\PDOException $pdoE) {
 			throw new \Exception($pdoE->getMessage());
 		}
 	}
-
+	/**
+     * Get all reported comments (admin)
+     * 
+     * Create an object for each reported comment and put inside the array $listReportedCommentsObj
+     * @return array $listReportedCommentsObj
+     * @throws \Exception
+     */
 	public function getReportedComments() {
 		try {
 			$db = $this->dbConnect();
@@ -104,6 +134,12 @@ class CommentsManager extends Manager {
 		}
 	}
 
+	/**
+     * Delete a recipe comments (admin)
+     * 
+	 * @param int $recipeId
+     * @throws \Exception
+     */
 	public function deleteComments($recipeId) {
 		try {
 			$db = $this->dbConnect();
@@ -113,7 +149,12 @@ class CommentsManager extends Manager {
 			throw new \Exception($pdoE->getMessage());
 		}
 	}
-
+	/**
+     * Report a comment
+     * 
+	 * @param int $commentId
+     * @throws \Exception
+     */
 	public function reportComment($commentId) {
 		try {
 			$db = $this->dbconnect();
@@ -123,7 +164,12 @@ class CommentsManager extends Manager {
 			throw new \Exception($pdoE->getMessage());
 		}
 	}
-
+	/**
+     * Delete a comment
+     * 
+	 * @param int $commentId
+     * @throws \Exception
+     */
 	public function deleteComment($commentId) {
 		try {
 			$db = $this->dbConnect();
@@ -134,6 +180,11 @@ class CommentsManager extends Manager {
 		}
 	}
 
+    /**
+     * Reset a reported comment
+     * @param int $commentId
+     * @throws \Exception
+     */
 	public function resetReportedComment($commentId) {
 		try {
 			$db = $this->dbConnect();

@@ -6,6 +6,10 @@ use app\model\CategoriesManager;
 
 class HomeController extends AppController
 {
+    /**
+     * Show recipes + categories infos on the homepage
+     * Display home view + $listCategories object + pagesInfos object
+     */
     public function displayHome()
     {
         $categoriesManager = new CategoriesManager();

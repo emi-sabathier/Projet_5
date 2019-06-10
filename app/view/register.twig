@@ -1,54 +1,55 @@
 {% extends "template.twig" %}
 {% block body %}
     <div>
-        <h3>Inscrivez-vous</h3>
-        <form action="{{ baseUrl }}/newuser" method="post" class="form-group needs-validation" novalidate>
-            <label for="registerEmail">Votre email</label>
-            <div class="input-group mb-3 col-md-3 pl-0">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="inputGroupPrepend">@</span>
-                </div>
-                <input type="text" id="registerEmail" name="registerEmail" aria-describedby="inputGroupPrepend"
-                       placeholder="Votre email" required/>
+        <h2 class="col-sm-12 col-md-12 col-lg-12 text-center">Identifiez-vous</h2>
+        <form action="{{ baseUrl }}/newuser" method="post"
+              class="form-group mx-auto form-login needs-validation col-sm-6 col-md-6 col-lg-6 text-center" novalidate>
+            <div class="row justify-content-center mx-auto align-items-center flex-column">
+                <div>
+                <label for="registerEmail"><strong>Votre email</strong></label>
+                <input type="text" id="registerEmail" name="registerEmail" class="form-control form-control-lg"
+                       placeholder="Votre email xxx@xxx.xx" required/>
                 {% if errors.emailExists %}
-                    <p>L'email existe déjà</p>
-                {% elseif errors.regexEmail %}
-                    <p>Veuillez rentrer un email valide. Lettres, chiffres, _ , . , - autorisés</p>
+                    <p class="alert alert-danger">L'email existe déjà</p>
+                {% elseif errors.wrongEmailFormat %}
+                    <p class="alert alert-danger">Veuillez rentrer un email valide.</p>
                 {% endif %}
-            </div>
-            <div>
-                <label for="Nickname">Votre pseudo</label><br/>
-                <div class="col-md-3 mb-3 pl-0">
-                    <input type="text" id="registerNickname" name="registerNickname" rows="10"
-                           placeholder="Votre pseudo" required/>
                 </div>
-                {% if errors.nicknameExists %}
-                    <p>Le pseudo est déjà pris</p>
-                {% elseif errors.regexNickname %}
-                    <p>Renseignez un pseudo valide (Lettres et chiffres)</p>
-                {% elseif errors.shortNickname %}
-                    <p>Le pseudo doit faire minimum 3 caractères</p>
-                {% endif %}
-            </div>
-            <div>
-                <label for="registerPwd">Mot de passe</label><br/>
-                <div class="col-md-3 mb-3 pl-0">
-                    <input type="password" id="registerPwd" name="registerPwd" rows="10"
-                           placeholder="Votre mot de passe" class="form-control form-control-md"
-                           placeholder="Votre mot de passe" required>
-                    {% if errors.regexPwd %}
-                        <p>Le mot de passe ne doit comprendre que des chiffres et lettres</p>
-                    {% elseif errors.shortPwd %}
-                        <p>Le mot de passe doit faire minimum 8 caractères </p>
-                    {% endif %}
+                <div>
+                    <label for="Nickname"><strong>Votre pseudo</strong></label><br/>
+
+                        <input type="text" id="registerNickname" name="registerNickname" rows="10"
+                               placeholder="Votre pseudo" class="form-control form-control-lg" required/>
+
+                        {% if errors.nicknameExists %}
+                            <p class="alert alert-danger">Le pseudo est déjà pris</p>
+                        {% elseif errors.regexNickname %}
+                            <p class="alert alert-danger">Renseignez un pseudo valide (Lettres et chiffres)</p>
+                        {% elseif errors.shortNickname %}
+                            <p class="alert alert-danger">Le pseudo doit faire minimum 3 caractères</p>
+                        {% endif %}
+
+                </div>
+                <div>
+                    <label for="registerPwd"><strong>Mot de passe</strong></label><br/>
+                        <input type="password" id="registerPwd" name="registerPwd" rows="10"
+                               placeholder="Votre mot de passe" class="form-control form-control-lg" required>
+                        {% if errors.regexPwd %}
+                            <p class="alert alert-danger">Le mot de passe ne doit comprendre que des chiffres et
+                                lettres</p>
+                        {% elseif errors.shortPwd %}
+                            <p class="alert alert-danger">Le mot de passe doit faire minimum 8 caractères </p>
+                        {% endif %}
+                        {% if errors.emptyField %}
+                            <p class="alert alert-danger">Un des champs est vide</p>
+                        {% endif %}
+                </div>
+                <div>
+                    <input type="submit" value="Envoyer" class="btn btn-primary p-1 m-3"/>
                 </div>
             </div>
-            <div>
-                <input type="submit" value="Envoyer" class="btn btn-primary p-1"/>
-            </div>
-            {% if errors.emptyField %}
-                <p>Un des champs est vide</p>
-            {% endif %}
         </form>
     </div>
+    <a href="{{ baseUrl }}" class="btn btn-secondary p-1 text-center"><i class="fas fa-arrow-circle-left"></i>
+        Retour</a></p>
 {% endblock %}

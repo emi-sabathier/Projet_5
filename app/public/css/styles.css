@@ -1,20 +1,380 @@
+/**** OVERWRITE ****/
+html {
+    height: 100%;
+}
+
+body {
+    font-family: 'Montserrat', 'Arial', sans-serif !important;
+    background-color: #f6f6f6;
+    color: #353535;
+    flex-direction: column;
+    height: 100%;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    font-weight: 700;
+    margin-top: 1rem;
+}
+
+h1::after {
+    content: '';
+    display: block;
+    width: 25%;
+    background-color: #F0A202;
+    height: 5px;
+    margin: 0 auto;
+    margin-top: .5rem;
+}
+
+h2 {
+    font-weight: 700;
+    margin: 1rem 0;
+}
+
+h2::after {
+    content: '';
+    display: block;
+    width: 25%;
+    background-color: #F0A202;
+    height: 5px;
+    margin: 0 auto;
+    margin-top: .5rem;
+}
+
+h3 {
+    font-weight: 700;
+    margin: 1rem 0;
+}
+
+h3::after {
+    content: '';
+    display: block;
+    width: 15%;
+    background-color: #F0A202;
+    height: 5px;
+    margin: 0 auto;
+    margin-top: 1rem;
+}
+
+h4 {
+    margin-top: 1rem;
+    font-size: 1.7rem;
+    font-weight: 800;
+    text-shadow: 0 1px 0 #000000;
+}
+
+h5 {
+    maargin: 1rem 0;
+    font-weight: 700;
+}
+
+figure {
+    margin: 0;
+    border-radius: 1rem;
+}
+
+figure img {
+    border-radius: 1rem;
+}
+
+footer {
+    background-color: #1c0011;
+}
+
+footer a, footer a:hover {
+    color: #fff;
+    text-decoration: none;
+}
+
+footer ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 0;
+    padding: 2rem;
+}
+
+footer li {
+    flex: auto;
+    text-align: center;
+}
+
+.page-link {
+    font-weight: 700;
+    color: #353535;
+}
+
+.row {
+    margin: 0;
+}
+
+.container-fluid {
+    padding: 0px;
+}
+
+.btn-success {
+    background-color: #F0A202;
+    border-color: #F0A202;
+}
+
+.btn-primary, .btn-primary:hover {
+    background-color: #F0A202;
+    border-color: #F0A202;
+}
+
+#comments .btn-danger {
+    font-size: 0.7rem;
+}
+
+.btn-success:hover, .btn-success:focus, .btn-success:active, .btn-success:not(:disabled):not(.disabled):active {
+    background-color: #efb801;
+    border-color: #efb801;
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary:not(:disabled):not(.disabled):active {
+    background-color: #efb801;
+    border-color: #efb801;
+}
+
+/**** HEADER ****/
+.menu-container {
+    flex: 1;
+}
+
+.logo {
+    font-size: 3rem;
+    font-weight: 900;
+    flex: 1;
+}
+.logo .part-one{
+    color:#983070;
+}
+.logo-image{
+    width: 50px;
+}
+.logo a, .logo a:hover {
+    text-decoration: none;
+    color: #fff;
+}
+
+.logo .part-two {
+    color: #000;
+}
+
+.navbar {
+    background-color: #88BA35;
+}
+
+.connect span, .connect i {
+    padding: 0.5rem;
+    font-weight: 400;
+}
+
+.connect:hover {
+    text-decoration: none;
+}
+
+.connect-area {
+    border-radius: 1rem;
+    padding: 0.5rem;
+}
+
+.p-disconnect {
+    padding: 0.5rem;
+}
+
+/**** SEARCH BAR ****/
+.no-recipe-msg {
+    font-weight: 700;
+}
+
+.search-bar-pos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .search-bar {
-    position: relative;
+    position: absolute;
+}
+
+.search-bar input {
+    border: none;
+}
+
+.input-group-lg > .custom-select, .input-group-lg > .form-control:not(textarea) {
+    height: calc(1.5em + 2rem + 2px)
+}
+
+.search-bar-bg {
+    background-color: #30011E;
+    opacity: 0.4;
+    width: 100%;
+    padding: 4rem;
 }
 
 .display-results {
     list-style-type: none;
 }
 
+/**** CARDS HOME ****/
+
+.card {
+    width: 75%;
+    margin: 0 auto;
+    border-radius: 1rem;
+}
+
+.animated {
+    animation-duration: 0.5s !important;
+}
+
+.card-text {
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 0 0 1rem 1rem;
+}
+
+.card-deck a, .card-deck a:hover {
+    text-decoration: none;
+}
+
+.card-deck a {
+    color: #000;
+}
+
+.btn, .card-recipe-label {
+    border-radius: 15px;
+}
+
+.card-text p {
+    margin: 0 0 0.5rem 0;
+    text-shadow: 0 1px 0 #000000;
+
+    font-size: 1rem;
+}
+
 .card-recipe-label {
-    top: -25px;
-    left: 5px;
+    top: -24px;
+    right: 0px;
+    -webkit-border-radius: 10px 0 0 0;
+    border-radius: 10px 0 0 0;
 }
 
-.card-recipe-infos{
-    font-size:0.7rem;
+.card-anim {
+    animation-duration: 1s;
 }
 
-.card-recipe {
+.card-recipe-infos {
+    font-size: 0.7rem;
+}
 
+.badge {
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.badge-success {
+    background-color: #983070;
+}
+
+/**** CATEGORIES HOME ****/
+
+.list-categories li {
+    padding: 0 1.5rem;
+}
+
+.list-categories li .btn {
+    font-size: 1.3rem;
+}
+
+.category-uppercase::first-letter {
+    text-transform: uppercase;
+}
+
+/**** RECIPE PAGE ****/
+.recipe-card {
+}
+
+ol {
+    width: 75%;
+    padding: 2rem;
+    border-radius: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin: 2rem auto;
+    background: white;
+}
+
+.recipe-desc ul {
+    width: 75%;
+    padding: 2rem;
+    border-radius: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin: 2rem auto;
+    background: white;
+    list-style: disc;
+}
+
+.recipe-card figure img {
+    border-radius: 1rem;
+    width: 100%;
+    max-width: 360px;
+}
+
+.recipe-infos {
+    border-radius: 1rem;
+    background-color: #fff;
+    padding: 1rem;
+}
+
+.recipe-infos ul {
+    line-height: 3;
+}
+
+.recipe-infos li .badge .badge-success {
+    font-size: 1.4rem;
+}
+
+a.badge-success:focus, a.badge-success:hover {
+    background: #983070;
+}
+
+.recipe-infos .badge-success {
+    border-radius: 15px;
+}
+
+#comments {
+    margin-top: 1rem;
+}
+
+/**** FONTAWESOME ICONS ****/
+
+.fa-user, .fa-sign-out-alt, .fa-user-lock {
+    font-size: 2rem;
+}
+
+.fa-user-lock {
+    margin: 0 0.5rem;
+}
+
+.fa-clock, .fa-user-friends, .fa-signal {
+    color: #F0A202;
+    font-size: 1.5rem
+}
+
+/**** FORM ****/
+.form-control, .form-control:focus {
+    color: #000;
+}
+
+.input-group-lg > .custom-select, .input-group-lg > .form-control, .input-group-lg > .input-group-append > .btn, .input-group-lg > .input-group-append > .input-group-text, .input-group-lg > .input-group-prepend > .btn, .input-group-lg > .input-group-prepend > .input-group-text {
+    border-color: #9871ab;
 }

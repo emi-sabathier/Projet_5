@@ -1,6 +1,6 @@
 {% extends "template.twig" %}
 {% block body %}
-    <h1>Erreur 404, page non trouvée.</h1>
-    <h4>Cela signifie que le lien que vous cherchez n'existe pas, ou n'est pas valide.</h4>
-    <p><a href="{{ baseUrl }}">Retour à l'accueil</a></p>
+    <h2 class="text-center">Erreur 404, page non trouvée.</h2>
+    <h5 class="text-center">Cela signifie que le lien que vous cherchez n'existe pas, ou n'est pas valide.</h5>
+    <a href="{{ baseUrl }}" class="btn btn-secondary p-1 text-center"><i class="fas fa-arrow-circle-left"></i> Retour</a></p>
 {% endblock %} 

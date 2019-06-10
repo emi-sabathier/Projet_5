@@ -4,7 +4,12 @@ namespace app\controller;
 
 use app\model\CommentsManager;
 use app\model\RecipesManager;
-
+/**
+ * Post a comment (ajax)
+ * Verifications on : $_POST['recipeId'], $_POST['comment'] $_SESSION['user']
+ * json_encode success + comment object + invalidComment
+ * Display recipe view
+ */
 class CommentsController extends AppController {
 	public function postComment() {
 		if (isset($_POST['recipeId'], $_SESSION['user']) && $_POST['recipeId'] > 0) {
@@ -32,10 +37,15 @@ class CommentsController extends AppController {
 				echo json_encode('invalidComment');
 			}
 		} else {
-			// vue par défaut
 			echo $this->twig->render('recipe.twig');
 		}
 	}
+	/**
+	 * List comments (admin)
+	 * Verifications : recipeId
+	 * Display $listComments object and adminListComments view
+	 * @param [int] $recipeId
+	 */
 	public function listComments($recipeId) {
 		if (isset($recipeId) && $recipeId > 0) {
 			$commentsManager = new CommentsManager();
@@ -49,6 +59,11 @@ class CommentsController extends AppController {
 			exit;
 		}
 	}
+	/**
+	 * Report user comment
+	 * Verifications : commentId
+	 * json_encode : success, error
+	 */
 	public function reportComment() {
 		if (isset($_POST['commentId'])) {
 			// si (int) : transforme en nombre entier peu importe ce que contient la var
@@ -65,7 +80,11 @@ class CommentsController extends AppController {
 			echo json_encode('error');
 		}
 	}
-
+/**
+ * Delete user comment (admin)
+ * Verifications : commentId
+ * json_encode : success + error
+ */
 	public function deleteComment() {
 		if (isset($_POST['commentId'])) {
 			$commentId = (int) $_POST['commentId'];
@@ -80,7 +99,11 @@ class CommentsController extends AppController {
 			echo json_encode('error');
 		}
 	}
-
+/**
+ * Reset a reported comment (admin)
+ * Verifications on : commentId
+ * json_encode : success + error
+ */
 	public function resetReportedComment() {
 		if (isset($_POST['commentId'])) {
 			$commentId = (int) $_POST['commentId'];

@@ -8,7 +8,10 @@ use Exception;
 
 class RecipesController extends AppController
 {
-
+    /**
+     * Display last 6 recipes for the homepage
+     * json_encode : success + $listRecipes object
+     */
     public function getLastRecipesHome()
     {
         $recipesManager = new RecipesManager();
@@ -20,6 +23,10 @@ class RecipesController extends AppController
         ]);
     }
 
+    /**
+     * Display last 6 recipes for the admin panel
+     * json_encode : success + $listRecipes object
+     */
     public function getLastRecipesAdmin()
     {
         $recipesManager = new RecipesManager();
@@ -31,12 +38,20 @@ class RecipesController extends AppController
         ]);
     }
 
+    /**
+     * Display recipes of a page (home pagination)
+     *
+     * Set to 6 recipes by page
+     * Verifications on : $_POST['pageNumber']
+     * json_encode : success + $listRecipes object
+     * @return object $pagesInfos;
+     */
     public function getRecipesByPage()
     {
 
         $recipesManager = new RecipesManager();
         $nbRecipes = $recipesManager->countRecipes();
-        $nbRecipesByPage = 4;
+        $nbRecipesByPage = 6;
         $nbPages = ceil($nbRecipes / $nbRecipesByPage);
 
         if (isset($_POST['pageNumber']) && $_POST['pageNumber'] > 0 && !empty($_POST['pageNumber']) && $_POST['pageNumber'] <= $nbPages) {
@@ -59,6 +74,14 @@ class RecipesController extends AppController
         return $pagesInfos;
     }
 
+    /**
+     * Display a recipe
+     *
+     * Verifications on : recipeId
+     * Display recipe view + recipe object + comment object
+     * @param [int] $recipeId
+     * @param [string] $compactVars
+     */
     public function recipe($recipeId, $compactVars = null)
     {
         if ($compactVars == null) {
@@ -67,7 +90,8 @@ class RecipesController extends AppController
                 $recipe = $recipesManager->getRecipe($recipeId);
 
                 if ($recipe == false) {
-                    echo 'L\'identifiant de recette n\'existe pas.';
+                    header('Location: ' . BASEURL);
+                    exit;
                 } else {
                     $commentsManager = new CommentsManager();
                     $comment = $commentsManager->getComments($recipeId);
@@ -84,6 +108,13 @@ class RecipesController extends AppController
         }
     }
 
+    /**
+     * Display the list of recipes by category (admin)
+     *
+     * Verifications on $_SESSION|['user']
+     * Display adminCategories view + $listRecipesByCat object
+     * @param [int] $catId
+     */
     public function listRecipesByCat($catId)
     {
         if (isset($_SESSION['user'])) {
@@ -103,6 +134,11 @@ class RecipesController extends AppController
         }
     }
 
+    /**
+     * Delete a recipe (admin) and its comments
+     *
+     * json_encode : success + error + nosession
+     */
     public function deleteRecipe()
     {
         if (isset($_POST['recipeId'], $_SESSION['user'])) {
@@ -121,6 +157,13 @@ class RecipesController extends AppController
         }
     }
 
+    /**
+     * Display the form to create a recipe (admin)
+     *
+     * Verifications on : $_SESSION['user']
+     * Display adminCreateRecipe view
+     * @param [string] $compactVars -> errors array from createRecipe()
+     */
     public function createRecipeForm($compactVars = null)
     {
         if ($compactVars == null) {
@@ -140,6 +183,13 @@ class RecipesController extends AppController
         }
     }
 
+    /**
+     * Create a recipe (admin)
+     *
+     * Verifications on $_SESSION['user'], $_POST['category-id'], $_POST['content'],  $_POST['cooking-time'],
+     * $_POST['persons'],  $_POST['difficulty-id'], $_FILES
+     * Display $errors in createRecipeForm() with compact('errors') - compactVars
+     */
     public function createRecipe()
     {
         if (isset($_SESSION['user'])) {
@@ -148,7 +198,6 @@ class RecipesController extends AppController
                 if (isset($_POST['title'], $_POST['category-id'], $_POST['content'], $_POST['cooking-time'], $_FILES['image'], $_POST['persons'], $_POST['difficulty-id'])) {
 
                     $fileName = $_FILES['image']['name'];
-//					$fileSize = $_FILES['image']['size'];
                     $fileTmp = $_FILES['image']['tmp_name'];
                     $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
                     $extensions = ['jpeg', 'jpg'];
@@ -165,12 +214,12 @@ class RecipesController extends AppController
                         if (!empty($errors)) {
                             $this->createRecipeForm(compact('errors'));
                         } else {
-                           $folder = $_SERVER['DOCUMENT_ROOT'] . '/Projets/Projet_5/app/public/images/';
-                           move_uploaded_file($fileTmp, $folder . 'original/' . $fileName);
-                           $imgSource = $folder . 'original/' . $fileName;
-                           $imgResized = $folder . 'resized/' . $fileName;
+                            $folder = $_SERVER['DOCUMENT_ROOT'] . '/app/public/images/';
+                            move_uploaded_file($fileTmp, $folder . 'original/' . $fileName);
+                            $imgSource = $folder . 'original/' . $fileName;
+                            $imgResized = $folder . 'resized/' . $fileName;
 
-                            $this->resizeImage($imgSource, $imgResized , '640', '480', 75);
+                            $this->resizeImage($imgSource, $imgResized, '640', '480', 75);
 
                             $recipesManager = new RecipesManager();
                             $recipesManager->createRecipe($_POST['title'], $_POST['category-id'], $_POST['content'], $_POST['cooking-time'], $fileName, $_POST['persons'], $_POST['difficulty-id']);
@@ -192,6 +241,13 @@ class RecipesController extends AppController
         }
     }
 
+    /**
+     * Update a recipe (admin)
+     *
+     * Verifications on $_SESSION['user'], $_POST['category-id'], $_POST['content'],  $_POST['cooking-time'],
+     * $_POST['persons'],  $_POST['difficulty-id'], $_FILES
+     * Return $errors with compact('errors') - compactVars
+     */
     public function updateRecipe($recipeId, $compactVars = null)
     {
 
@@ -204,7 +260,6 @@ class RecipesController extends AppController
 
                     if (isset($_POST['title'], $_POST['category-id'], $_POST['content'], $_POST['cooking-time'], $_FILES['image'], $_POST['persons'], $_POST['difficulty-id'])) {
                         $fileName = $_FILES['image']['name'];
-//					$fileSize = $_FILES['image']['size'];
                         $fileTmp = $_FILES['image']['tmp_name'];
                         $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
                         $extensions = ['jpeg', 'jpg'];
@@ -221,16 +276,14 @@ class RecipesController extends AppController
                         }
 
                         if (!empty($errors)) {
-                            // $errors + $recipe (ttes les infos de la recette)
-                            // Création de $compactVars
                             $this->updateRecipe($recipeId, compact('errors', 'recipe'));
                         } else {
-                            $folder = $_SERVER['DOCUMENT_ROOT'] . '/Projets/Projet_5/app/public/images/';
+                            $folder = $_SERVER['DOCUMENT_ROOT'] . '/app/public/images/';
                             move_uploaded_file($fileTmp, $folder . 'original/' . $fileName);
                             $imgSource = $folder . 'original/' . $fileName;
                             $imgResized = $folder . 'resized/' . $fileName;
 
-                            $this->resizeImage($imgSource, $imgResized , '640', '480', 75);
+                            $this->resizeImage($imgSource, $imgResized, '640', '480', 71);
 
                             $recipesManager = new RecipesManager();
                             $recipesManager->updateRecipe($_POST['title'], $_POST['category-id'], $_POST['content'], $_POST['cooking-time'], $fileName, $_POST['persons'], $_POST['difficulty-id'], $recipeId);
@@ -254,14 +307,31 @@ class RecipesController extends AppController
             echo $this->twig->render('adminUpdateRecipe.twig', $compactVars);
         }
     }
-    public function resizeImage ($source, $dst, $width, $height, $quality){
-            $imageSize = getimagesize($source) ;
-            $imageRessource= imagecreatefromjpeg($source) ;
-            $imageFinal = imagecreatetruecolor($width, $height) ;
-            $final = imagecopyresampled($imageFinal, $imageRessource, 0,0,0,0, $width, $height, $imageSize[0], $imageSize[1]) ;
-            imagejpeg($imageFinal, $dst, $quality) ;
+
+    /**
+     * Resize uploaded recipe image into 640x480
+     *
+     * @param [string] $source
+     * @param [string] $dst
+     * @param [int] $width
+     * @param [int] $height
+     * @param [int] $quality
+     */
+    public function resizeImage($source, $dst, $width, $height, $quality)
+    {
+        $imageSize = getimagesize($source);
+        $imageRessource = imagecreatefromjpeg($source);
+        $imageFinal = imagecreatetruecolor($width, $height);
+        $final = imagecopyresampled($imageFinal, $imageRessource, 0, 0, 0, 0, $width, $height, $imageSize[0], $imageSize[1]);
+        imagejpeg($imageFinal, $dst, $quality);
     }
 
+    /**
+     * Search recipes by title or category
+     *
+     * Verifications on : $_POST['keyword']
+     * json_encode : empty, success, $recipes object
+     */
     public function searchRecipes()
     {
         if (isset($_POST['keyword'])) {

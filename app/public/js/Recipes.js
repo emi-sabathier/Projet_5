@@ -3,8 +3,11 @@ class Recipes {
         this.baseUrl = baseurl;
         this.displayLastRecipesHome();
         $('#keyword').on('input', this.searchRecipe.bind(this));
-        $('.page-link').on('click', this.displayRecipesByPageHome.bind(this));
+        $('.page-link').on('click',
+            this.displayRecipesByPageHome.bind(this)
+        );
     }
+
     displayLastRecipesHome() {
         $.get(this.baseUrl + '/displayLastRecipes', (response) => {
             if (response.status === 'success') {
@@ -17,10 +20,12 @@ class Recipes {
             }
         }, 'JSON');
     }
+
     displayRecipesByPageHome(e) {
         let pageNumber = $(e.target).attr('data-id');
         $.post(this.baseUrl + '/page', {pageNumber: pageNumber}, (response) => {
             if (response.status === 'success') {
+
                 $('#list-recipes').empty();
                 response.recipes.forEach((recipe) => {
                     this.createRecipeCard(recipe);
@@ -30,29 +35,31 @@ class Recipes {
             }
         }, 'JSON');
     }
+
     createRecipeCard(recipe) {
         $('#list-recipes').append([
-            $('<article>', {'class': 'card card-recipe'}).append(
-                $('<img>', {
-                    'src': this.baseUrl + '/app/public/images/resized/' + recipe.image,
-                    'class' : 'w-100'
-                }),
+            $('<article>', {
+                'class': 'animated fadeIn card-anim col-sm-6 col-md-4 col-lg-4 mx-auto'
+            }).append(
                 $('<div>', {
-                    'class': 'card-body text-center position-relative'
+                    'class': 'mb-3'
                 }).append(
-                    $('<span>', {
-                        'class': 'badge badge-success position-absolute card-recipe-label'
-                    }).text(recipe.category),
-                    $('<h3>').append(
-                        $('<strong>').text(recipe.title)
-                    ),
-                    $('<p>', {
-                        'class' : 'card-recipe-infos'
-                    }).html(' De ' + '<strong>' + recipe.nickname + '</strong> le ' + recipe.date),
                     $('<a>', {
-                        'class' : 'btn btn-primary p-1',
-                        'href' : 'id/' + recipe.id
-                    }).text('Voir recette')
+                        'href': this.baseUrl + '/id/' + recipe.id,
+                        'class': 'card card-recipe'
+                    }).append(
+                        $('<figure>').append(
+                            $('<img>', {
+                                'src': this.baseUrl + '/app/public/images/resized/' + recipe.image,
+                                'class': 'w-100'
+                            })
+                        ),
+                        $('<div>', {'class': 'position-absolute text-center w-100 text-white card-text'}).append(
+                            $('<span>', {'class': 'badge badge-success position-absolute card-recipe-label'}).text(recipe.categoryLabel),
+                            $('<h4>').text(recipe.title),
+                            $('<p>').html('<i class="fas fa-clock"></i> ' + recipe.time + 'mn <i class="fas fa-comment-dots"></i> ' + recipe.nbComments),
+                        )
+                    )
                 )
             )
         ]);
@@ -60,12 +67,11 @@ class Recipes {
 
     searchRecipe() {
         let keyword = $('#keyword').val();
-
         $.post(this.baseUrl + '/search', {keyword: keyword}, (response) => {
             let listRecipe = $('#list-recipes');
             if (response.status === 'success') {
-
-                if (keyword === '') { // vide
+                if (keyword === '') {
+                    $('.no-recipe-msg').text('');
                     this.displayLastRecipesHome();
                 } else {
                     listRecipe.empty();
@@ -73,8 +79,9 @@ class Recipes {
                         this.createRecipeCard(recipe);
                     });
                 }
-            } else if (response.status === 'empty') {
+            } else {
                 listRecipe.empty();
+                $('.no-recipe-msg').text('Aucune recette trouvée.');
             }
         }, 'JSON');
     }
